@@ -14,7 +14,8 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        //
+        $restaurants = Restaurant::all();
+        return view('Dashboard.restaurants.index', compact('restaurants'));
     }
 
     /**
@@ -24,7 +25,7 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        //
+        return view('Dashboard.restaurants.create');
     }
 
     /**
@@ -35,7 +36,14 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, Restaurant::rules());
+
+        $pic = time() . '_' . request()->file('picture')->getClientOriginalName();
+        request()->file('picture')->storeAs('/',"/restaurants/{$pic}", '');
+
+        Restaurant::create(array_merge($request->all(), ['picture' => $pic]));
+
+        return redirect()->route('dashboard.restaurants.index')->with('success','Item added successfully');
     }
 
     /**
@@ -57,7 +65,7 @@ class RestaurantController extends Controller
      */
     public function edit(Restaurant $restaurant)
     {
-        //
+        return view('Dashboard.restaurants.edit', compact('restaurant'));
     }
 
     /**
@@ -69,7 +77,28 @@ class RestaurantController extends Controller
      */
     public function update(Request $request, Restaurant $restaurant)
     {
-        //
+        $this->validate($request, Restaurant::rules($update = true, $restaurant->id));
+
+        if (request()->hasFile('picture')) {
+            if(!empty($restaurant->picture))
+            {
+                $picture = "/storage/restaurants/{$restaurant->picture}";
+                $path = str_replace('\\','/',public_path());
+                
+                if(file_exists($path . $picture))
+                {
+                    unlink($path . $picture);
+                }
+            }
+            $pic = time() . '_' . request()->file('picture')->getClientOriginalName();
+            request()->file('picture')->storeAs('/',"/restaurants/{$pic}", '');
+
+            $request->request->add(['picture' => $pic]);
+        }
+
+        $restaurant->update($request->all());
+
+        return redirect()->route('dashboard.restaurants.index')->with('success','Item updated successfully');
     }
 
     /**
@@ -80,6 +109,12 @@ class RestaurantController extends Controller
      */
     public function destroy(Restaurant $restaurant)
     {
-        //
+        try{
+            $restaurant->delete();
+        } catch (\Exception $ex) {
+            return redirect()->back()->withErrors('Can\'t delete this item.');
+        }
+
+        return redirect()->back()->with('success', 'Item deleted successfully.');
     }
 }

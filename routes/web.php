@@ -17,6 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
+Route::group(['middleware' => ['auth'], 'prefix' => 'dashboard', 'as' => 'dashboard' . '.'], function () {
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::resource('categories'    ,'CategoryController');
+    Route::resource('restaurants'   ,'RestaurantController');
+    Route::resource('branches'      ,'BranchController');
 
-Route::get('/home', 'HomeController@index')->name('home');
+    
+    Route::get('/customers'         , 'CustomersController@index')->name('customers.index');
+});
+
+
