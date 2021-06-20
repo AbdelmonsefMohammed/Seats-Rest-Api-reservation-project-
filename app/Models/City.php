@@ -9,4 +9,9 @@ class City extends Model
     public $timestamps = false;
     
     protected $guarded = ['id'];
+
+    public function governorate()
+    {
+        return $this->belongsTo(Governorate::class);
+    }
 }

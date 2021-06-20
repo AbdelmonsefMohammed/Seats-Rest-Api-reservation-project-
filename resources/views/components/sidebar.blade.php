@@ -46,7 +46,7 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
-                            <a href="index.html" class="nav-link ">
+                            <a href="{{route('dashboard.home')}}" class="nav-link ">
                                 <span class="title">Dashboard 1</span>
                             </a>
                         </li>

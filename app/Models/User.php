@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use HasApiTokens, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -37,4 +38,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function rules($update = false, $id = null)
+    {
+        $common = [
+            'name' => 'required|string|max:255',
+            'email' => "required|string|email|max:255|unique:users,email,$id",
+            'password' => 'nullable|confirmed|string|min:8',
+        ];
+
+        if ($update) {
+            return $common;
+        }
+
+        return array_merge($common, [
+            'email'     => "required|string|email|max:255|unique:users",
+            'password'  => 'required|confirmed|string|min:8',
+        ]);
+    }
 }

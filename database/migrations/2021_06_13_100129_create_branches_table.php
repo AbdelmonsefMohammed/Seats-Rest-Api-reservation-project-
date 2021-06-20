@@ -18,6 +18,8 @@ class CreateBranchesTable extends Migration
             $table->unsignedBigInteger('restaurant_id');
             $table->double('lat');
             $table->double('lng');
+            $table->string('address');
+            $table->unsignedBigInteger('city_id');
             $table->integer('landline')->nullable();
             $table->integer('mobile1')->nullable();
             $table->integer('mobile2')->nullable();
@@ -27,6 +29,7 @@ class CreateBranchesTable extends Migration
             $table->timestamps();
 
             $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
         });
     }
 
