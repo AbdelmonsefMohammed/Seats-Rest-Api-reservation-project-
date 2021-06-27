@@ -66,6 +66,7 @@
                                     <th class="center"> Name </th>
                                     <th class="center"> Type </th>
                                     <th class="center"> Main Number </th>
+                                    <th class="center"> Categories </th>
                                     <th class="center"> Website </th>
                                     <th class="center"> Action </th>
                                 </tr>
@@ -77,6 +78,11 @@
                                         <td class="center">{{$restaurant->name}}</td>
                                         <td class="center">{{$restaurant->type}}</td>
                                         <td class="center">{{$restaurant->main_number}}</td>
+                                        <td class="center">
+                                            @foreach ($restaurant->categories as $category)
+                                                {{$category->name}}  ,
+                                            @endforeach
+                                        </td>
                                         <td class="center">{{$restaurant->website_link}}</td>
                                         <td class="center">
                                             <a href="{{route('dashboard.restaurants.edit', $restaurant->id)}}" class="btn btn-tbl-edit btn-xs">

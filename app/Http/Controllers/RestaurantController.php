@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,8 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        return view('Dashboard.restaurants.create');
+        $categories = Category::all();
+        return view('Dashboard.restaurants.create',compact('categories'));
     }
 
     /**
@@ -37,11 +39,16 @@ class RestaurantController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, Restaurant::rules());
-
+        $categories_array = [];
+        $categories = $request->except('_token','name','main_number','opening_time','closing_time','website_link','type','price_range','picture');
+        foreach ($categories as $key => $value) {
+            $arr = explode('_',$key);
+            $categories_array[] = $arr[1];
+        }
         $pic = time() . '_' . request()->file('picture')->getClientOriginalName();
         request()->file('picture')->storeAs('/',"/restaurants/{$pic}", '');
-
-        Restaurant::create(array_merge($request->all(), ['picture' => $pic]));
+        $restaurant = Restaurant::create(array_merge($request->all(), ['picture' => $pic]));
+        $restaurant->categories()->attach($categories_array);
 
         return redirect()->route('dashboard.restaurants.index')->with('success','Item added successfully');
     }
@@ -65,7 +72,9 @@ class RestaurantController extends Controller
      */
     public function edit(Restaurant $restaurant)
     {
-        return view('Dashboard.restaurants.edit', compact('restaurant'));
+        $categories = Category::all();
+        $restaurantCategories = $restaurant->categories->pluck('id')->toArray();
+        return view('Dashboard.restaurants.edit', compact('restaurant','categories','restaurantCategories'));
     }
 
     /**

@@ -110,6 +110,19 @@
                                         </select>
                                     </div>
                                  </div>
+                                 <div class="col-lg-6"> 
+                                    <div class="form-group">
+                                        <label>Select Categories</label>
+                                         @foreach ($categories as $category)
+                                            <div class="checkbox checkbox-icon-black p-0">
+                                                <input name="categories_{{$category->id}}" {{in_array($category->id,$restaurantCategories)? 'checked':''}}  id="checkbox{{$category->id}}" type="checkbox" >
+                                                <label for="checkbox{{$category->id}}">
+                                                    {{$category->name}}
+                                                </label>
+                                            </div>
+                                         @endforeach
+                                    </div>
+                                </div>
                                  <label class="col-lg-2 p-t-20">Picture</label>
                                  <div class="col-lg-4"> 
                                     <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">

@@ -109,12 +109,26 @@
                                         </select>
                                     </div>
                                  </div>
+                                 <div class="col-lg-6"> 
+                                    <div class="form-group">
+                                        <label>Select Categories</label>
+                                         @foreach ($categories as $category)
+                                            <div class="checkbox checkbox-icon-black p-0">
+                                                <input id="checkbox{{$category->id}}"  type="checkbox" name="categories_{{$category->id}}">
+                                                <label for="checkbox{{$category->id}}">
+                                                    {{$category->name}}
+                                                </label>
+                                            </div>
+                                         @endforeach
+                                    </div>
+                                </div>
                                  <label class="col-lg-2 p-t-20">Picture</label>
                                  <div class="col-lg-4"> 
                                     <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
                                         <input name="picture" class ="mdl-textfield__input" type="file" required>
                                     </div>
                                 </div>
+
                                 <div class="col-lg-12 p-t-20 text-center"> 
                                     <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Submit</button>
                                     <a type="button" href="{{route('dashboard.restaurants.index')}}" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</a>

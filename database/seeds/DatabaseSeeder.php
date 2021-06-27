@@ -1,7 +1,10 @@
 <?php
 
-use App\Models\User;
 use App\Models\City;
+use App\Models\User;
+use App\Models\Branch;
+use App\Models\Category;
+use App\Models\Restaurant;
 use App\Models\Governorate;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -50,7 +53,34 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $superadmin->assignRole('Super Admin');
-        // $userteacher->assignRole('teacher');
-        // $userstudent->assignRole('student');
+
+
+        //create categories
+        $Breakfast = Category::create(['name' => 'Breakfast']);
+        $Oriantel = Category::create(['name' => 'Oriantel']);
+        $Fast_Food = Category::create(['name' => 'Fast Food']);
+
+        //create Restaurant
+
+        $MAC = Restaurant::create([
+            'name'          =>  'MAC',
+            'opening_time'  =>  '10:00:00',
+            'closing_time'  =>  '23:00:00',
+            'main_number'   =>  '692',
+            'picture'       =>  '1623934962_aa.PNG',
+            'price_range'   =>  '2',
+            'type'          =>  'Restaurant',
+        ]);
+        $categories = [$Breakfast->id, $Fast_Food->id];
+        $MAC->categories()->attach($categories);
+
+        // add branchs to mac 
+        $branch1 = Branch::create([
+            'restaurant_id' =>  $MAC->id,
+            'lat'           =>  '30.141945946519552',
+            'lng'           =>  '31.342200015846924',
+            'address'       =>  'Voluptatem duis repr',
+            'city_id'       =>  1,
+        ]);
     }
 }

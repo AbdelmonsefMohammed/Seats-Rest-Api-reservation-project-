@@ -1,0 +1,140 @@
+openapi: 3.0.3
+info:
+  title: Laravel
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/v1/register:
+    post:
+      summary: 'Register endpoint'
+      description: "This endpoint allows you to register new user.\nIt's a really useful endpoint, and you should play around\nwith it for a bit.\n<aside class=\"notice\">We mean it; you really should.😕</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/login:
+    post:
+      summary: ''
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/v1/getbranches/{category}':
+    get:
+      summary: ''
+      description: ''
+      parameters:
+        -
+          in: query
+          name: lat
+          description: 'you send the lat of the user (User need to enable GPS).'
+          example: null
+          required: false
+          schema:
+            type: string
+            description: 'you send the lat of the user (User need to enable GPS).'
+            example: null
+        -
+          in: query
+          name: lng
+          description: 'you send the lng of the user (User need to enable GPS).'
+          example: null
+          required: false
+          schema:
+            type: string
+            description: 'you send the lng of the user (User need to enable GPS).'
+            example: null
+        -
+          in: query
+          name: distance
+          description: "you send the max distance you want to search for By (km) the logged in user By dafault\nthe distance is 20 km (can only be used if lat and lng are provided) ."
+          example: '20'
+          required: false
+          schema:
+            type: string
+            description: "you send the max distance you want to search for By (km) the logged in user By dafault\nthe distance is 20 km (can only be used if lat and lng are provided) ."
+            example: '20'
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Get
+          description: ''
+          example: 'Branches in home screen endpoint'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  branches: [{ id: 1, restaurant_id: 1, lat: 30.14194594652, lng: 31.342200015847, address: 'Voluptatem duis repr', city_id: 1, landline: null, mobile1: null, mobile2: null, number_of_tables: null, number_of_seats: null, number_of_available_seats: null, created_at: '2021-06-23T08:48:50.000000Z', updated_at: '2021-06-23T08:48:50.000000Z', restaurant: { id: 1, name: MAC, opening_time: '10:00:00', closing_time: '23:00:00', main_number: 692, website_link: null, picture: 1623934962_aa.PNG, price_range: '2', type: Restaurant, created_at: '2021-06-23T08:48:50.000000Z', updated_at: '2021-06-23T08:48:50.000000Z', price_range_symbol: $$ }, city: { id: 1, governorate_id: 1, city_name_ar: '15 مايو', city_name_en: '15 May', governorate: { id: 1, governorate_name_ar: القاهرة, governorate_name_en: Cairo } } }, { id: 2, restaurant_id: 2, lat: 35.14194594652, lng: 31.342200015847, address: 'akeJFBALEKJFBAJK AB FAWB WJ BA', city_id: 5, landline: null, mobile1: null, mobile2: null, number_of_tables: null, number_of_seats: null, number_of_available_seats: null, created_at: null, updated_at: null, restaurant: { id: 2, name: KFC, opening_time: '00:00:00', closing_time: '23:55:00', main_number: 11223144, website_link: null, picture: 1624440734_a.PNG, price_range: '2', type: Restaurant, created_at: '2021-06-23T09:32:14.000000Z', updated_at: '2021-06-23T09:32:14.000000Z', price_range_symbol: $$ }, city: { id: 5, governorate_id: 1, city_name_ar: الخليفة, city_name_en: El-Khalifa, governorate: { id: 1, governorate_name_ar: القاهرة, governorate_name_en: Cairo } } }]
+                properties:
+                  branches: { type: array, example: [{ id: 1, restaurant_id: 1, lat: 30.14194594652, lng: 31.342200015847, address: 'Voluptatem duis repr', city_id: 1, landline: null, mobile1: null, mobile2: null, number_of_tables: null, number_of_seats: null, number_of_available_seats: null, created_at: '2021-06-23T08:48:50.000000Z', updated_at: '2021-06-23T08:48:50.000000Z', restaurant: { id: 1, name: MAC, opening_time: '10:00:00', closing_time: '23:00:00', main_number: 692, website_link: null, picture: 1623934962_aa.PNG, price_range: '2', type: Restaurant, created_at: '2021-06-23T08:48:50.000000Z', updated_at: '2021-06-23T08:48:50.000000Z', price_range_symbol: $$ }, city: { id: 1, governorate_id: 1, city_name_ar: '15 مايو', city_name_en: '15 May', governorate: { id: 1, governorate_name_ar: القاهرة, governorate_name_en: Cairo } } }, { id: 2, restaurant_id: 2, lat: 35.14194594652, lng: 31.342200015847, address: 'akeJFBALEKJFBAJK AB FAWB WJ BA', city_id: 5, landline: null, mobile1: null, mobile2: null, number_of_tables: null, number_of_seats: null, number_of_available_seats: null, created_at: null, updated_at: null, restaurant: { id: 2, name: KFC, opening_time: '00:00:00', closing_time: '23:55:00', main_number: 11223144, website_link: null, picture: 1624440734_a.PNG, price_range: '2', type: Restaurant, created_at: '2021-06-23T09:32:14.000000Z', updated_at: '2021-06-23T09:32:14.000000Z', price_range_symbol: $$ }, city: { id: 5, governorate_id: 1, city_name_ar: الخليفة, city_name_en: El-Khalifa, governorate: { id: 1, governorate_name_ar: القاهرة, governorate_name_en: Cairo } } }], items: { type: object } }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: category
+        description: 'Optional parameter.'
+        required: true
+        schema:
+          type: string
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: all

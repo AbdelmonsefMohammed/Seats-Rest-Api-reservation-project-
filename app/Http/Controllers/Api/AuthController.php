@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * Register endpoint
+     *
+     * This endpoint allows you to register new user.
+     * It's a really useful endpoint, and you should play around 
+     * with it for a bit.
+     * <aside class="notice">We mean it; you really should.😕</aside>
+     */
     public function register(Request $request)
     {
         $this->validate($request, User::rules());
