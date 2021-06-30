@@ -15,12 +15,14 @@ class CreateOffersTable extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('restaurant_id');
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('picture');
             $table->decimal('amount');
             $table->set('type', ['flat','percentage']);
             $table->timestamps();
 
+            $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }

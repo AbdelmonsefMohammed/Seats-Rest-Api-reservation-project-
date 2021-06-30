@@ -16,12 +16,16 @@ class CreateReservationsTable extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('branch_id');
             $table->date('date');
             $table->time('time');
             $table->integer('number_of_seats')->nullable();
+            $table->set('status', ['New','Pending','Approved','Rejected','Completed']);
+            $table->string('qr_code')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }
 

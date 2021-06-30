@@ -21,8 +21,8 @@ class Branch extends Model
     public static function rules($update = false, $id = null)
     {
         $common = [
-            'lat'           => "required",
-            'lng'           => "required",
+            'lat'           => ['required','regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/'],
+            'lng'           => ['required','regex:/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/'],
             'address'       => "required",
             'landline'      => "nullable",
             'mobile1'       => "nullable",

@@ -38,6 +38,7 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
+        
         $this->validate($request, Restaurant::rules());
         $categories_array = [];
         $categories = $request->except('_token','name','main_number','opening_time','closing_time','website_link','type','price_range','picture');
@@ -86,6 +87,12 @@ class RestaurantController extends Controller
      */
     public function update(Request $request, Restaurant $restaurant)
     {
+        $categories_array = [];
+        $categories = $request->except('_token','_method','name','main_number','opening_time','closing_time','website_link','type','price_range','picture');
+        foreach ($categories as $key => $value) {
+            $arr = explode('_',$key);
+            $categories_array[] = $arr[1];
+        }
         $this->validate($request, Restaurant::rules($update = true, $restaurant->id));
 
         if (request()->hasFile('picture')) {
@@ -106,7 +113,8 @@ class RestaurantController extends Controller
         }
 
         $restaurant->update($request->all());
-
+        $restaurant->categories()->detach();
+        $restaurant->categories()->attach($categories_array);
         return redirect()->route('dashboard.restaurants.index')->with('success','Item updated successfully');
     }
 

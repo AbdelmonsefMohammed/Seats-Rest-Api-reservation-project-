@@ -26,6 +26,18 @@ class CreateBranchesTable extends Migration
             $table->integer('number_of_tables')->nullable();
             $table->integer('number_of_seats')->nullable();
             $table->integer('number_of_available_seats')->nullable();
+            $table->boolean('party_area')->default(0);
+            $table->boolean('kids_area')->default(0);
+            $table->boolean('smooking_area')->default(0);
+            $table->boolean('open_area')->default(0);
+            $table->boolean('family_area')->default(0);
+            $table->boolean('football_matches')->default(0);
+            $table->boolean('couples_only')->default(0);
+            $table->boolean('entry_fee')->default(0);
+            $table->boolean('pre_paid')->default(0);
+            $table->integer('commition')->nullable();
+            $table->decimal('birthday_price')->nullable();
+            $table->integer('birthday_commition')->nullable();
             $table->timestamps();
 
             $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');

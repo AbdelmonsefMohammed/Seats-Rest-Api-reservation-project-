@@ -18,19 +18,7 @@ class CreateSuppliersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('restaurant_id');
             $table->string('name');
-            $table->string('service'); 
-            $table->boolean('party_area');
-            $table->boolean('kids_area');
-            $table->boolean('smooking_area');
-            $table->boolean('open_area');
-            $table->boolean('family_area');
-            $table->boolean('football_matches');
-            $table->boolean('couples_only');
-            $table->boolean('entry_fee');
-            $table->boolean('pre_paid');
-            $table->integer('commition')->nullable();
-            $table->decimal('birthday_price')->nullable();
-            $table->integer('birthday_commition')->nullable();
+            // $table->string('service'); 
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

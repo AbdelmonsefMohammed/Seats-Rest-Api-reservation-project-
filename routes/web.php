@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'dashboard', 'as' => 'dashbo
 
     
     Route::get('/customers'         , 'CustomersController@index')->name('customers.index');
+    Route::get('/reservations'      , 'ReservationController@index')->name('reservations.index');
 
     // ajax
     Route::get('/getcities/{governorate}', 'BranchController@getcities')->name('getcities');

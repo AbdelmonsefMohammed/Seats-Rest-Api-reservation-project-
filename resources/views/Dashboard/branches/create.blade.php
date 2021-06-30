@@ -48,7 +48,7 @@
                                         <select name="restaurant_id" class="form-control" required>
                                             <option value="">...</option>
                                             @foreach ($restaurants as $restaurant)
-                                                <option value="{{$restaurant->id}}">{{$restaurant->name}}</option>
+                                                <option {{old('restaurant_id') == $restaurant->id? 'selected':''}} value="{{$restaurant->id}}">{{$restaurant->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -80,7 +80,7 @@
                                  </div>
                                  <div class="col-lg-6 p-t-20">
                                     <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                      <input name="lat" {{old('lat')}} class="mdl-textfield__input" type="text" 
+                                      <input name="lat" value="{{old('lat')}}" class="mdl-textfield__input" type="text" 
                                          pattern = "-?[0-9]*(\.[0-9]+)?" id="text5" required>
                                       <label class = "mdl-textfield__label" for = "text5">Lat</label>
                                       {{-- <span class = "mdl-textfield__error">Lat required!</span> --}}
@@ -88,7 +88,7 @@
                                  </div>
                                 <div class="col-lg-6 p-t-20">
                                     <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                      <input name="lng" {{old('lng')}} class = "mdl-textfield__input" type = "text" 
+                                      <input name="lng" value="{{old('lng')}}" class = "mdl-textfield__input" type = "text" 
                                          pattern = "-?[0-9]*(\.[0-9]+)?" id="text5" required>
                                       <label class = "mdl-textfield__label" for = "text5">Lng</label>
                                       {{-- <span class = "mdl-textfield__error">Lng required!</span> --}}
@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="col-lg-6 p-t-20">
                                     <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                      <input name="landline" class = "mdl-textfield__input" type = "text" 
+                                      <input name="landline" value="{{old('landline')}}" class = "mdl-textfield__input" type = "text" 
                                          pattern = "-?[0-9]*(\.[0-9]+)?" id = "text5">
                                       <label class = "mdl-textfield__label" for = "text5">Landline</label>
                                       {{-- <span class = "mdl-textfield__error">Number required!</span> --}}
@@ -104,7 +104,7 @@
                                  </div>
                                  <div class="col-lg-6 p-t-20">
                                     <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                      <input name="mobile1" class = "mdl-textfield__input" type = "text" 
+                                      <input name="mobile1" value="{{old('mobile1')}}" class = "mdl-textfield__input" type = "text" 
                                          pattern = "-?[0-9]*(\.[0-9]+)?" id = "text5">
                                       <label class = "mdl-textfield__label" for = "text5">Mobile 1</label>
                                       {{-- <span class = "mdl-textfield__error">Number required!</span> --}}
@@ -112,7 +112,7 @@
                                  </div>
                                  <div class="col-lg-6 p-t-20">
                                     <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                      <input name="mobile2" class = "mdl-textfield__input" type = "text" 
+                                      <input name="mobile2" value="{{old('mobile2')}}" class = "mdl-textfield__input" type = "text" 
                                          pattern = "-?[0-9]*(\.[0-9]+)?" id = "text5">
                                       <label class = "mdl-textfield__label" for = "text5">Mobile 2</label>
                                       {{-- <span class = "mdl-textfield__error">Number required!</span> --}}
@@ -120,18 +120,79 @@
                                  </div>
                                  <div class="col-lg-6 p-t-20">
                                     <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                      <input name="number_of_tables" class = "mdl-textfield__input" type = "text" 
+                                      <input name="number_of_tables" value="{{old('number_of_tables')}}" class = "mdl-textfield__input" type = "text" 
                                          pattern = "-?[0-9]*(\.[0-9]+)?" id = "text5">
                                       <label class = "mdl-textfield__label" for = "text5">Number of Tables</label>
                                       {{-- <span class = "mdl-textfield__error">Number required!</span> --}}
                                     </div>
                                  </div>
                                  <div class="col-lg-6 p-t-20">
+                                    <br>
+                                    <div class="checkbox checkbox-black">
+                                        <input name="party_area" value="1" {{old('party_area')? 'checked':''}} id="celebrationscheckbox" type="checkbox" >
+                                        <label for="celebrationscheckbox">
+                                            Is there a place for celebrations?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input name="kids_area" value="1" {{old('kids_area')? 'checked':''}} id="kidsareacheckbox" type="checkbox">
+                                        <label for="kidsareacheckbox">
+                                            Is there a kids's area?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input name="smooking_area" value="1" {{old('smooking_area')? 'checked':''}} id="smokingareacheckbox" type="checkbox">
+                                        <label for="smokingareacheckbox">
+                                            Is there a smoking area?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input name="open_area" value="1" {{old('open_area')? 'checked':''}} id="openareacheckbox" type="checkbox">
+                                        <label for="openareacheckbox">
+                                            Is there an open space?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input name="family_area" value="1" {{old('family_area')? 'checked':''}} id="familycornercheckbox" type="checkbox">
+                                        <label for="familycornercheckbox">
+                                            Is there a family corner?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input name="football_matches" value="1" {{old('football_matches')? 'checked':''}} id="footballmatchescheckbox" type="checkbox">
+                                        <label for="footballmatchescheckbox">
+                                            Broadcast football matches?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input name="couples_only" value="1" {{old('couples_only')? 'checked':''}} id="couplesonlycheckbox" type="checkbox">
+                                        <label for="couplesonlycheckbox">
+                                            Couples only?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input name="entry_fee" value="1" {{old('entry_fee')? 'checked':''}} id="entryfeecheckbox" type="checkbox">
+                                        <label for="entryfeecheckbox">
+                                            Is there an entry fee?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input name="pre_paid" value="1" {{old('pre_paid')? 'checked':''}} id="paidinadvancecheckbox" type="checkbox">
+                                        <label for="paidinadvancecheckbox">
+                                            Is the reservation paid in advance?
+                                        </label>
+                                    </div>
+                                </div>
+                                 <div class="col-lg-6 p-t-20">
                                     <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                      <input name="number_of_seats" class = "mdl-textfield__input" type = "text" 
+                                      <input name="number_of_seats" value="{{old('number_of_seats')}}" class = "mdl-textfield__input" type = "text" 
                                          pattern = "-?[0-9]*(\.[0-9]+)?" id = "text5">
                                       <label class = "mdl-textfield__label" for = "text5">Number of Seats</label>
-                                      {{-- <span class = "mdl-textfield__error">Number required!</span> --}}
+                                    </div>
+                                    <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        <input name="birthday_price" value="{{old('birthday_price')}}" class = "mdl-textfield__input" type = "text" 
+                                           pattern = "-?[0-9]*(\.[0-9]+)?" id = "text5">
+                                        <label class = "mdl-textfield__label" for = "text5">Birth Day Price</label>
                                     </div>
                                  </div>
                                 <div class="col-lg-12 p-t-20 text-center"> 

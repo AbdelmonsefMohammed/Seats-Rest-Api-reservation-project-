@@ -131,11 +131,81 @@
                                     </div>
                                  </div>
                                  <div class="col-lg-6 p-t-20">
+                                    <br>
+                                    <div class="checkbox checkbox-black">
+                                        <input type="hidden" name="party_area" value="0">
+                                        <input name="party_area" value="1" {{ $branch->party_area? 'checked':''}} id="celebrationscheckbox" type="checkbox" >
+                                        <label for="celebrationscheckbox">
+                                            Is there a place for celebrations?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input type="hidden" name="kids_area" value="0">
+                                        <input name="kids_area" value="1" {{ $branch->kids_area? 'checked':''}} id="kidsareacheckbox" type="checkbox">
+                                        <label for="kidsareacheckbox">
+                                            Is there a kids's area?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input type="hidden" name="smooking_area" value="0">
+                                        <input name="smooking_area" value="1" {{ $branch->smooking_area? 'checked':''}} id="smokingareacheckbox" type="checkbox">
+                                        <label for="smokingareacheckbox">
+                                            Is there a smoking area?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input type="hidden" name="open_area" value="0">
+                                        <input name="open_area" value="1" {{ $branch->open_area? 'checked':''}} id="openareacheckbox" type="checkbox">
+                                        <label for="openareacheckbox">
+                                            Is there an open space?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input type="hidden" name="family_area" value="0">
+                                        <input name="family_area" value="1" {{ $branch->family_area? 'checked':''}} id="familycornercheckbox" type="checkbox">
+                                        <label for="familycornercheckbox">
+                                            Is there a family corner?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input type="hidden" name="football_matches" value="0">
+                                        <input name="football_matches" value="1" {{ $branch->football_matches? 'checked':''}} id="footballmatchescheckbox" type="checkbox">
+                                        <label for="footballmatchescheckbox">
+                                            Broadcast football matches?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input type="hidden" name="couples_only" value="0">
+                                        <input name="couples_only" value="1" {{ $branch->couples_only? 'checked':''}} id="couplesonlycheckbox" type="checkbox">
+                                        <label for="couplesonlycheckbox">
+                                            Couples only?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input type="hidden" name="entry_fee" value="0">
+                                        <input name="entry_fee" value="1" {{ $branch->entry_fee? 'checked':''}} id="entryfeecheckbox" type="checkbox">
+                                        <label for="entryfeecheckbox">
+                                            Is there an entry fee?
+                                        </label>
+                                    </div>
+                                    <div class="checkbox checkbox-black">
+                                        <input type="hidden" name="pre_paid" value="0">
+                                        <input name="pre_paid" value="1" {{ $branch->pre_paid? 'checked':''}} id="paidinadvancecheckbox" type="checkbox">
+                                        <label for="paidinadvancecheckbox">
+                                            Is the reservation paid in advance?
+                                        </label>
+                                    </div>
+                                </div>
+                                 <div class="col-lg-6 p-t-20">
                                     <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
                                       <input name="number_of_seats" value="{{ $branch->number_of_seats ?? old('number_of_seats')}}" class = "mdl-textfield__input" type = "text" 
                                          pattern = "-?[0-9]*(\.[0-9]+)?" id = "text5">
                                       <label class = "mdl-textfield__label" for = "text5">Number of Seats</label>
-                                      {{-- <span class = "mdl-textfield__error">Number required!</span> --}}
+                                    </div>
+                                    <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        <input name="birthday_price" value="{{ $branch->birthday_price ?? old('birthday_price')}}" class = "mdl-textfield__input" type = "text" 
+                                           pattern = "-?[0-9]*(\.[0-9]+)?" id = "text5">
+                                        <label class = "mdl-textfield__label" for = "text5">Birth Day Price</label>
                                     </div>
                                  </div>
                                 <div class="col-lg-12 p-t-20 text-center"> 
