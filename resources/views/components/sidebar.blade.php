@@ -91,6 +91,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{route('dashboard.offers.index')}}" class="nav-link nav-toggle"> <i class="material-icons">widgets</i>
+                        <span class="title">Offers</span> 
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link nav-toggle"> <i class="material-icons">grain</i>
                         <span class="title">Apps</span> <span class="arrow"></span>
                     </a>

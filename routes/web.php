@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'dashboard', 'as' => 'dashbo
     Route::resource('categories'    ,'CategoryController');
     Route::resource('restaurants'   ,'RestaurantController');
     Route::resource('branches'      ,'BranchController');
+    Route::resource('offers'        ,'OffersController');
 
     
     Route::get('/customers'         , 'CustomersController@index')->name('customers.index');
