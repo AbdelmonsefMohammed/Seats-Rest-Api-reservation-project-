@@ -42,9 +42,10 @@ class User extends Authenticatable
     public static function rules($update = false, $id = null)
     {
         $common = [
-            'name' => 'required|string|max:255',
-            'email' => "required|string|email|max:255|unique:users,email,$id",
-            'password' => 'nullable|confirmed|string|min:8',
+            'name'      => 'required|string|max:255',
+            'email'     => "required|string|email|max:255|unique:users,email,$id",
+            'password'  => 'nullable|confirmed|string|min:8',
+            'avatar'    => 'nullable|image|mimes:jpeg,jpg,png|max:10000'
         ];
 
         if ($update) {
