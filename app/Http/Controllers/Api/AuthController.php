@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -24,8 +25,23 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $this->validate($request, User::rules());
+        $validator = Validator::make($request->all(), [
+            'name'      => 'required|string|max:255',
+            'email'     => "required|string|email|max:255|unique:users",
+            'password'  => 'required|confirmed|string|min:8',
+            'avatar'    => 'nullable|image|mimes:jpeg,jpg,png|max:10000'
+        ]);
 
+        if ($validator->fails()) {
+            $response = [
+                'message'   => 'The given data was invalid',
+                'validation'=> $validator->errors(),    
+                'data'      => [],
+                'code'      => 400
+            ];
+    
+            return response()->json($response, 400);
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -34,63 +50,121 @@ class AuthController extends Controller
         $user->assignRole('customer');
         $token = $user->createToken('auth_token')->plainTextToken;
         $response = [
-            'code' => 201,
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'data'  => $user
+            'message'   => 'User registered successfully',
+            'validation'=> [],    
+            'data'  => ['user'          => $user,
+                        'access_token'  => $token,
+                        'token_type'    => 'Bearer',
+                        ],
+            'code'      => 200,
+
         ];
 
-        return response()->json($response, 201);
+        return response()->json($response, 200);
     }
 
     public function login(Request $request)
     {
-        $fields = $request->validate([
+        $validator = Validator::make($request->all(), [
             'email'     => 'required|string|email|max:255',
             'password'  => 'required|string|min:8'
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'code'    => 401,
-                'message' => 'Invalid login details'
-            ], 401);
+        if ($validator->fails()) {
+            $response = [
+                'message'   => 'The given data was invalid',
+                'validation'=> $validator->errors(),    
+                'data'      => [],
+                'code'      => 400
+            ];
+    
+            return response()->json($response, 400);
         }
 
-        $user = User::where('email', $fields['email'])->firstOrFail();
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            $response = [
+                'message'   => 'Invalid login details',
+                'validation'=> [  "email" => [ "Invalid email or password." ]],    
+                'data'      => [],
+                'code'      => 400
+            ];
+            return response()->json($response, 400);
+        }
+
+        $user = User::where('email', $request->email)->firstOrFail();
 
         $token = $user->createToken('auth_token')->plainTextToken;
         $response = [
-            'code'          => 200,
-            'access_token'  => $token,
-            'token_type'    => 'Bearer',
-            'data'          => $user
+            'message'   => 'User looged in successfully',
+            'validation'=> [],    
+            'data'  => ['user'          => $user,
+                        'access_token'  => $token,
+                        'token_type'    => 'Bearer',
+                        ],
+            'code'      => 200,
         ];
 
         return response()->json($response, 200);
     }
     public function sendPasswordResetLinkEmail(Request $request) {
-		$request->validate(['email' => 'required|email']);
+        $validator = Validator::make($request->all(), [
+            'email'     => 'required|string|email|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            $response = [
+                'message'   => 'The given data was invalid',
+                'validation'=> $validator->errors(),    
+                'data'      => [],
+                'code'      => 400
+            ];
+    
+            return response()->json($response, 400);
+        }
 
 		$status = Password::sendResetLink(
 			$request->only('email')
 		);
 
 		if($status === Password::RESET_LINK_SENT) {
-			return response()->json(['message' => __($status)], 200);
+            $response = [
+                'message'   => 'We have emailed your password reset link!',
+                'validation'=> [],    
+                'data'      => [],
+                'code'      => 200
+            ];
+    
+            return response()->json($response, 200);
 		} else {
-			throw ValidationException::withMessages([
-				'email' => __($status)
-			]);
+            $response = [
+                'message'   => 'The given data was invalid',
+                'validation'=> ['email' => __($status)],    
+                'data'      => [],
+                'code'      => 400
+            ];
+    
+            return response()->json($response, 400);
 		}
 	}
 
 	public function resetPassword(Request $request) {
-		$request->validate([
-			'token' => 'required',
-			'email' => 'required|email',
-			'password' => 'required|min:8|confirmed',
-		]);
+
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+            'email'     => 'required|string|email|max:255',
+            'password'  => 'required|string|min:8|confirmed'
+        ]);
+
+        if ($validator->fails()) {
+            $response = [
+                'message'   => 'The given data was invalid',
+                'validation'=> $validator->errors(),    
+                'data'      => [],
+                'code'      => 400
+            ];
+    
+            return response()->json($response, 400);
+        }
 
 		$status = Password::reset(
 			$request->only('email', 'password', 'password_confirmation', 'token'),
@@ -106,11 +180,27 @@ class AuthController extends Controller
 		);
 
 		if($status == Password::PASSWORD_RESET) {
-			return response()->json(['message' => __($status)], 200);
+            $response = [
+                'message'   => __($status),
+                'validation'=> [],    
+                'data'      => [],
+                'code'      => 200
+            ];
+    
+            return response()->json($response, 200);
+
 		} else {
-			throw ValidationException::withMessages([
-				'email' => __($status)
-			]);
+            $response = [
+                'message'   => 'The given data was invalid',
+                'validation'=> ['email' => __($status)],    
+                'data'      => [],
+                'code'      => 400
+            ];
+    
+            return response()->json($response, 400);
+			// throw ValidationException::withMessages([
+			// 	'email' => __($status)
+			// ]);
 		}
 	}
 
@@ -121,9 +211,14 @@ class AuthController extends Controller
 
         // logout from current device only
         auth()->user()->currentAccessToken()->delete();
-        return [
-            'code' => 200,
-            'message'   => 'User Logged out'
+        $response = [
+            'message'   => 'User Logged out successfully',
+            'validation'=> [],    
+            'data'      => [],
+            'code'      => 200
         ];
+
+        return response()->json($response, 200);
+
     }
 }
