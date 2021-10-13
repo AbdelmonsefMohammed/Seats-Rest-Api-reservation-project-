@@ -24,7 +24,12 @@ Route::group(['prefix' => '/v1'], function() {
     Route::get('/getbranches/{category}', 'Api\BranchApiController@getBranchesByCategory');
 
     Route::group(['middleware' => ['auth:sanctum']], function(){
-        Route::post('/logout', 'Api\AuthController@logout');        
+
+        Route::post('/logout', 'Api\AuthController@logout');     
+        Route::patch('/profile', 'Api\ProfileController@updateProfileData');
+        Route::put('/profile/avatar', 'Api\ProfileController@updateAvatar'); 
+        Route::delete('/profile/avatar', 'Api\ProfileController@deleteAvatar'); 
+        
         Route::get('/authenticateduser', function (Request $request) {
             return $request->user();
         });

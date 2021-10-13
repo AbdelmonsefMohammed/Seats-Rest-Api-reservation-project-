@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -198,9 +197,6 @@ class AuthController extends Controller
             ];
     
             return response()->json($response, 400);
-			// throw ValidationException::withMessages([
-			// 	'email' => __($status)
-			// ]);
 		}
 	}
 
