@@ -42,9 +42,24 @@ class ProfileController extends Controller
         return response()->json($response, 200);
     }
 
-    public function updateAvatar()
+    public function updateAvatar(Request $request)
     {
-        if (request()->hasFile('avatar')) {
+        $validator = Validator::make($request->all(), [
+            'avatar'    => 'required|image|mimes:jpeg,jpg,png|max:10000'
+        ]);
+
+        if ($validator->fails()) {
+            $response = [
+                'message'   => 'The given data was invalid',
+                'validation'=> $validator->errors(),    
+                'data'      => [],
+                'code'      => 400
+            ];
+    
+            return response()->json($response, 400);
+        }
+
+        if ($request->file('avatar')) {
             $avatar = auth()->user()->avatar;
             $user_id = auth()->user()->id;
             if(!empty($avatar))
@@ -60,18 +75,18 @@ class ProfileController extends Controller
             $pic = time() . '_' . request()->file('avatar')->getClientOriginalName();
             request()->file('avatar')->storeAs('/',"/users/{$user_id}/{$pic}", '');
 
-            auth()->user()->update(['avatar' => $pic]);
-        }else{
+            auth()->user()->update(['avatar' => $pic]); 
             $response = [
-                'message'   => 'invalid request',
-                'validation'=> [ "avatar" => [ "No Image Was attached."]],    
+                'message'   => 'User updated avatar successfully',
+                'validation'=> [],    
                 'data'      => [],
-                'code'      => 400,
-    
+                'code'      => 200
             ];
     
-            return response()->json($response, 400);
+            return response()->json($response, 200);
+  
         }
+
     }
 
     public function deleteAvatar()

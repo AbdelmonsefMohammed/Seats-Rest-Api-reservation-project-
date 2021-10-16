@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/resetallcachebyartisancommad'         , 'ArtisanCommandsController@resetcache');
+Route::get('/storagelinkcommand'         , 'ArtisanCommandsController@storagelink');
+
 Route::get('/', function () {
     return view('welcome');
 });

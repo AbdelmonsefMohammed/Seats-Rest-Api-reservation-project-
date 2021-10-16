@@ -27,7 +27,7 @@ Route::group(['prefix' => '/v1'], function() {
 
         Route::post('/logout', 'Api\AuthController@logout');     
         Route::patch('/profile', 'Api\ProfileController@updateProfileData');
-        Route::put('/profile/avatar', 'Api\ProfileController@updateAvatar'); 
+        Route::post('/profile/avatar', 'Api\ProfileController@updateAvatar'); 
         Route::delete('/profile/avatar', 'Api\ProfileController@deleteAvatar'); 
         
         Route::get('/authenticateduser', function (Request $request) {

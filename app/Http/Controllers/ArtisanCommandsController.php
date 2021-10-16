@@ -14,4 +14,10 @@ class ArtisanCommandsController extends Controller
         \Artisan::call('config:cache');
         dd('cache clear successfully');
     }
+
+    public function storagelink()
+    {
+        \Artisan::call('storage:link');
+        dd('storage link created');
+    }
 }
