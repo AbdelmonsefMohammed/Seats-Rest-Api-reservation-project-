@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Branch;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -24,6 +25,7 @@ class BranchApiController extends Controller
      */
     public function getBranchesByCategory($category = 'all')
     {
+        $categories = Category::select('id','name')->get();
         if (request()->lat && request()->lng) {
             if (request()->distance) {
                 $radius = request()->distance;
@@ -34,8 +36,7 @@ class BranchApiController extends Controller
             * using eloquent approach, make sure to replace the "Restaurant" with your actual model name
             * replace 6371000 with 6371 for kilometer and 3956 for miles
             */
-            $branches = Branch::selectRaw("id, restaurant_id, lat, lng, address, city_id, landline, mobile1, mobile2,
-                                        ( 6371 * acos( cos( radians(?) ) *
+            $branches = Branch::selectRaw("*,( 6371 * acos( cos( radians(?) ) *
                                         cos( radians( lat ) )
                                         * cos( radians( lng ) - radians(?)
                                         ) + sin( radians(?) ) *
@@ -47,16 +48,14 @@ class BranchApiController extends Controller
 
                 $branches = $branches->whereHas('restaurant', function($query) use($category) {
                     $query->whereHas('categories', function($query) use($category){
-                        $query->where('categories.id', $category);
+                        $query->where('categories.name', $category);
                     });
                  }); //// not finished
             }
 
             $branches = $branches->orderBy("distance",'asc')
-                                    ->offset(0)
-                                    ->limit(20)
-                                    ->with('restaurant','city.governorate')
-                                    ->get();
+                                    ->with('restaurant.categories','city.governorate')
+                                    ->paginate(20);
             
             
         }else{
@@ -64,14 +63,31 @@ class BranchApiController extends Controller
             {
                 $branches = Branch::whereHas('restaurant', function($query) use($category) {
                     $query->whereHas('categories', function($query) use($category){
-                        $query->where('categories.id', $category);
+                        $query->where('categories.name', $category);
                     });
-                 })->inRandomOrder()->limit(20)->with('restaurant','city.governorate')->get();
+                 })->inRandomOrder()->with('restaurant.categories','city.governorate')->paginate(20);
             }else{
-                $branches = Branch::inRandomOrder()->limit(20)->with('restaurant','city.governorate')->get();
+                $branches = Branch::inRandomOrder()->with('restaurant.categories','city.governorate')->paginate(20);
             }
         }
         // return $branches;
-        return response()->json(['branches' => $branches]);
+        if ($branches->count() < 1) {
+            $response = [
+                'message'   => 'There is no Available Results',
+                'validation'=> [],    
+                'data'      => [],
+                'code'      => 200
+            ];
+        }else{
+            $response = [
+                'message'   => '',
+                'validation'=> [],    
+                'data'      => ['categories' => $categories,'branches' => $branches],
+                'code'      => 200
+            ];
+        }
+
+
+        return response()->json($response, 200);
     }
 }

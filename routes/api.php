@@ -21,7 +21,7 @@ Route::group(['prefix' => '/v1'], function() {
     Route::post('/password/email', 'Api\AuthController@sendPasswordResetLinkEmail')->middleware('throttle:5,1');
     Route::post('/password/reset', 'Api\AuthController@resetPassword');
 
-    Route::get('/getbranches/{category}', 'Api\BranchApiController@getBranchesByCategory');
+    Route::get('/getbranches/{category?}', 'Api\BranchApiController@getBranchesByCategory');
 
     Route::group(['middleware' => ['auth:sanctum']], function(){
 
