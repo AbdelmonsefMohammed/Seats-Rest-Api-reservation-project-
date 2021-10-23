@@ -50,9 +50,21 @@ class BranchApiController extends Controller
                     $query->whereHas('categories', function($query) use($category){
                         $query->where('categories.name', $category);
                     });
-                 }); //// not finished
+                 });
             }
-
+            // if (request()->rating){
+            //     $branches = $branches->whereHas('avgRating')
+            // }
+            if (request()->price){
+                $branches = $branches->whereHas('restaurant', function($query) {
+                    $query->where('price_range', request()->price);
+                });
+            }
+            if (request()->type){
+                $branches = $branches->whereHas('restaurant', function($query) {
+                    $query->where('type', request()->type);
+                });
+            }
             $branches = $branches->orderBy("distance",'asc')
                                     ->with('restaurant.categories','city.governorate')
                                     ->paginate(20);
@@ -75,7 +87,7 @@ class BranchApiController extends Controller
             $response = [
                 'message'   => 'There is no Available Results',
                 'validation'=> [],    
-                'data'      => [],
+                'data'      => ['categories' => $categories],
                 'code'      => 200
             ];
         }else{

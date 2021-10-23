@@ -17,4 +17,13 @@ class Reservation extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function rating()
+    {
+        return $this->hasMany(RestaurantRating::class);
+    }
+
+    public function avgRating()
+{
+    return $this->rating->avg('rating');
+}
 }
