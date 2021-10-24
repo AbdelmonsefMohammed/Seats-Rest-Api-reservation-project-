@@ -102,4 +102,27 @@ class BranchApiController extends Controller
 
         return response()->json($response, 200);
     }
+
+    public function show($id)
+    {
+        $branch = Branch::where('id',$id)->with('restaurant.categories','city.governorate')->get();
+        if ($branch->count() < 1) {
+            $response = [
+                'message'   => 'There is no Available Results',
+                'validation'=> [],    
+                'data'      => [],
+                'code'      => 400
+            ];
+        }else{
+            $response = [
+                'message'   => '',
+                'validation'=> [],    
+                'data'      => ['branch' => $branch],
+                'code'      => 200
+            ];
+        }
+
+
+        return response()->json($response, 400);
+    }
 }

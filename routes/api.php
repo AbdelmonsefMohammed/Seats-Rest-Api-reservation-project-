@@ -22,6 +22,7 @@ Route::group(['prefix' => '/v1'], function() {
     Route::post('/password/reset', 'Api\AuthController@resetPassword');
 
     Route::get('/getbranches/{category?}', 'Api\BranchApiController@getBranchesByCategory');
+    Route::get('/branch/{category}/show' , 'Api\BranchApiController@show');
 
     Route::group(['middleware' => ['auth:sanctum']], function(){
 
