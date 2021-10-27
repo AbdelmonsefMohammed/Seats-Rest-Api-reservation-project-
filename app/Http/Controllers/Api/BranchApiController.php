@@ -123,6 +123,6 @@ class BranchApiController extends Controller
         }
 
 
-        return response()->json($response, 400);
+        return response()->json($response, 200);
     }
 }

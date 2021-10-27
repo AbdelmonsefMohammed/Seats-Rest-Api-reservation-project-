@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
@@ -27,6 +28,11 @@ class ProfileController extends Controller
             ];
     
             return response()->json($response, 400);
+        }
+        if ($request->password) {
+            $request->merge([
+                'password' => Hash::make($request->password),
+            ]);
         }
 
         auth()->user()->update($request->all());

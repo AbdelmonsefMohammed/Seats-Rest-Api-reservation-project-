@@ -30,6 +30,8 @@ Route::group(['prefix' => '/v1'], function() {
         Route::patch('/profile', 'Api\ProfileController@updateProfileData');
         Route::post('/profile/avatar', 'Api\ProfileController@updateAvatar'); 
         Route::delete('/profile/avatar', 'Api\ProfileController@deleteAvatar'); 
+
+        Route::post('/rate/{branch}', 'Api\RatingController@logout');
         
         Route::get('/authenticateduser', function (Request $request) {
             return $request->user();

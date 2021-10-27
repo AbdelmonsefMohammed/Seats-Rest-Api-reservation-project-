@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\RestaurantRating;
 use Illuminate\Http\Request;
 
-class RestaurantRatingController extends Controller
+class BranchRatingController extends Controller
 {
     /**
      * Display a listing of the resource.

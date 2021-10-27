@@ -17,10 +17,10 @@ Route::get('/storagelinkcommand'         , 'ArtisanCommandsController@storagelin
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Auth::routes(['register' => false]);
-Route::group(['middleware' => ['auth'], 'prefix' => 'dashboard', 'as' => 'dashboard' . '.'], function () {
+Route::group(['middleware' => ['auth','role'], 'prefix' => 'dashboard', 'as' => 'dashboard' . '.'], function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::resource('categories'    ,'CategoryController');
     Route::resource('restaurants'   ,'RestaurantController');
@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'dashboard', 'as' => 'dashbo
     Route::resource('offers'        ,'OffersController');
 
     
-    Route::get('/customers'         , 'CustomersController@index')->name('customers.index');
+    Route::resource('/customers'    , 'CustomersController');
     Route::get('/reservations'      , 'ReservationController@index')->name('reservations.index');
 
     // ajax

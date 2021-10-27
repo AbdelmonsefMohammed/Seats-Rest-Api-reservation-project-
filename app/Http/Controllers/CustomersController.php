@@ -82,8 +82,12 @@ class CustomersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        try{
+            $user->delete();
+        } catch (\Exception $ex) {
+            return redirect()->back()->withErrors('Can\'t delete this User.');
+        }
     }
 }
