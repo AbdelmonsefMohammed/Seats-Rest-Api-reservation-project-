@@ -61,16 +61,20 @@ class DatabaseSeeder extends Seeder
         $Fast_Food = Category::create(['name' => 'Fast Food']);
 
         //create Restaurant
+        // restaurant names 
+        $restaurants = ['MAC','EL za3eem','Oriantal','KFC','Momen','paradise','Maxim','Pizza Hut','Dominos Pizza'];
+        foreach ($restaurants as $restaurantName) {
+            $restaurant = Restaurant::create([
+                'name'          =>  $restaurantName,
+                'opening_time'  =>  '10:00:00',
+                'closing_time'  =>  '23:00:00',
+                'main_number'   =>  '692',
+                'picture'       =>  '1623934962_aa.PNG',
+                'price_range'   =>  '2',
+                'type'          =>  'Restaurant',
+            ]);
+        }
 
-        $MAC = Restaurant::create([
-            'name'          =>  'MAC',
-            'opening_time'  =>  '10:00:00',
-            'closing_time'  =>  '23:00:00',
-            'main_number'   =>  '692',
-            'picture'       =>  '1623934962_aa.PNG',
-            'price_range'   =>  '2',
-            'type'          =>  'Restaurant',
-        ]);
         $categories = [$Breakfast->id, $Fast_Food->id];
         $MAC->categories()->attach($categories);
 
