@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+
         $gov_json = File::get("database/data/governorates.json");
         $govdata = json_decode($gov_json);
         foreach ($govdata as $obj) {
@@ -54,6 +56,10 @@ class DatabaseSeeder extends Seeder
 
         $superadmin->assignRole('Super Admin');
 
+        $users = factory('App\Models\User', 500)->create();
+        foreach ($users as $user) {
+            $user->assignRole('customer');
+        }
 
         //create categories
         $Breakfast = Category::create(['name' => 'Breakfast']);
@@ -73,18 +79,37 @@ class DatabaseSeeder extends Seeder
                 'price_range'   =>  '2',
                 'type'          =>  'Restaurant',
             ]);
+            $category_ids = [];
+            $category_ids[] = Category::all()->random()->id;
+            $category_ids[] = Category::all()->random()->id;
+
+            $restaurant->categories()->sync($category_ids);
         }
 
-        $categories = [$Breakfast->id, $Fast_Food->id];
-        $MAC->categories()->attach($categories);
+        $branches_json = File::get("database/data/branches.json");
+        $branchesData = json_decode($branches_json);
+        foreach ($branchesData as $obj) {
+            $branch = Branch::create(array(
+                'restaurant_id' =>  Restaurant::all()->random()->id,
+                'lat'           =>  $obj->latitude,
+                'lng'           =>  $obj->longitude,
+                'address'       =>  'address test',
+                'city_id'       =>  City::all()->random()->id,
+            ));
+            if ($branch->id == 20000) {
+                break;
+            }
+        }
+        // $categories = [$Breakfast->id, $Fast_Food->id];
+        // $MAC->categories()->attach($categories);
 
         // add branchs to mac 
-        $branch1 = Branch::create([
-            'restaurant_id' =>  $MAC->id,
-            'lat'           =>  '30.141945946519552',
-            'lng'           =>  '31.342200015846924',
-            'address'       =>  'Voluptatem duis repr',
-            'city_id'       =>  1,
-        ]);
+        // $branch1 = Branch::create([
+        //     'restaurant_id' =>  $MAC->id,
+        //     'lat'           =>  '30.141945946519552',
+        //     'lng'           =>  '31.342200015846924',
+        //     'address'       =>  'Voluptatem duis repr',
+        //     'city_id'       =>  1,
+        // ]);
     }
 }
