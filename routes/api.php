@@ -32,6 +32,14 @@ Route::group(['prefix' => '/v1'], function() {
         Route::delete('/profile/avatar', 'Api\ProfileController@deleteAvatar'); 
 
         Route::post('/rate/{branch}', 'Api\RatingController@logout');
+
+        //saved places
+        Route::get('/saved_places', 'Api\SavedPlacesController@index');
+        Route::post('/save_branch/{branch_id}', 'Api\SavedPlacesController@store');
+        Route::post('/forget_branch/{branch_id}', 'Api\SavedPlacesController@destroy');
+
+
+        Route::post('/logout', 'Api\AuthController@logout');
         
         Route::get('/authenticateduser', function (Request $request) {
             return $request->user();

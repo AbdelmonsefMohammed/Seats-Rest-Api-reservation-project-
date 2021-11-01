@@ -18,6 +18,11 @@ class Branch extends Model
         return $this->belongsTo(City::class);
     }
 
+    public function savedPlaces()
+    {
+        return $this->hasMany(SavedPlaces::class);
+    }
+
     public static function rules($update = false, $id = null)
     {
         $common = [
