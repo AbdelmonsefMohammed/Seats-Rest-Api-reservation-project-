@@ -38,8 +38,8 @@ Route::group(['prefix' => '/v1'], function() {
         Route::post('/save_branch/{branch_id}', 'Api\SavedPlacesController@store');
         Route::post('/forget_branch/{branch_id}', 'Api\SavedPlacesController@destroy');
 
-
-        Route::post('/logout', 'Api\AuthController@logout');
+        //App rating
+        Route::post('/rateapp', 'Api\AppRatingController@rateapp');
         
         Route::get('/authenticateduser', function (Request $request) {
             return $request->user();
