@@ -23,6 +23,11 @@ class Branch extends Model
         return $this->hasMany(SavedPlaces::class);
     }
 
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
     public static function rules($update = false, $id = null)
     {
         $common = [

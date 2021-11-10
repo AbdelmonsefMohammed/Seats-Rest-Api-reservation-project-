@@ -20,7 +20,7 @@ class CreateReservationsTable extends Migration
             $table->date('date');
             $table->time('time');
             $table->integer('number_of_seats')->nullable();
-            $table->set('status', ['New','Pending','Approved','Rejected','Completed']);
+            $table->set('status', ['New','Pending','Approved','Rejected','Completed'])->default('Pending');
             $table->string('qr_code')->nullable();
             $table->timestamps();
 

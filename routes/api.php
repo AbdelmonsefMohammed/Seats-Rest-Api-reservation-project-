@@ -44,6 +44,10 @@ Route::group(['prefix' => '/v1'], function() {
         Route::get('/authenticateduser', function (Request $request) {
             return $request->user();
         });
+
+        // reservations
+        Route::get('/reservations', 'Api\ReservationController@index');
+        Route::post('/reserve', 'Api\ReservationController@store');
     });
 
     
