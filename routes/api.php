@@ -48,6 +48,9 @@ Route::group(['prefix' => '/v1'], function() {
         // reservations
         Route::get('/reservations', 'Api\ReservationController@index');
         Route::post('/reserve', 'Api\ReservationController@store');
+
+        // branch rarting
+        Route::post('/ratebranch/{branch}', 'Api\BranchRatingController@rateBranch');
     });
 
     

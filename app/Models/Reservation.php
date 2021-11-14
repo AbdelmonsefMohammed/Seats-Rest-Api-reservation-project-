@@ -8,22 +8,28 @@ class Reservation extends Model
 {
     protected $guarded = ['id'];
 
-    public function branch()
+    public function branches()
     {
-        return $this->belongsTo(Branch::class);
+        return $this->hasMany(Branch::class, 'id', 'branch_id');
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function rating()
-    {
-        return $this->hasMany(RestaurantRating::class);
-    }
+    // public function rating()
+    // {
+    //     return $this->hasMany(BranchRating::class);
+    // }
+    
+    // public function userRating()
+    // {
+    //     return $this->rating->latest();
+    // }
 
-    public function avgRating()
-{
-    return $this->rating->avg('rating');
-}
+    // public function avgRating()
+    // {
+    // return $this->rating->avg('rating');
+    // }
+    
 }
