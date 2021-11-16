@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Branch extends Model
 {
+    protected $appends = ['rating'];
     protected $guarded = ['id'];
 
     public function restaurant()
@@ -26,6 +27,35 @@ class Branch extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function branchRatings()
+    {
+        return $this->hasMany(BranchRating::class);
+    }
+
+    // public function avgRating()
+    // {
+    //     return $this->branchRatings()
+    //                 ->selectRaw('avg(rating) as result, branch_id')
+    //                 ->groupBy('branch_id');
+    // }
+
+    // public function getAvgRatingAttribute()
+    // {
+    //     if ( ! array_key_exists('avgRating', $this->relations)) {
+    //     $this->load('avgRating');
+    //     }
+
+    //     $relation = $this->getRelation('avgRating')->first();
+
+    //     return ($relation) ? $relation->aggregate : null;
+    // }
+
+    public function getRatingAttribute()
+    {
+        // return $this->branchRatings()->avg('rating');
+        return $this->branchRatings()->sum('rating') / $this->branchRatings()->count()?: 1 ?: 0;
     }
 
     public static function rules($update = false, $id = null)

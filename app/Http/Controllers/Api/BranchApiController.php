@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Branch;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class BranchApiController extends Controller
@@ -25,6 +26,16 @@ class BranchApiController extends Controller
      */
     public function getBranchesByCategory($category = 'all')
     {
+        $branches = Branch::take(5)->get();
+        return $branches;
+        // $products = Branch::with(['branchRatings'])
+        //                     ->leftJoin('branch_ratings', 'branch_ratings.branch_id', '=', 'branches.id')
+        //                     ->select(['branches.*',
+        //                         DB::raw('avg(rating) as ratings_average')
+        //                         ])
+        //                         ->groupBy('branches.id')->orderBy('ratings_average', 'DESC')->get();
+
+        // return $branches;
         $categories = Category::select('id','name')->get();
         if (request()->lat && request()->lng) {
             if (request()->distance) {
@@ -53,7 +64,7 @@ class BranchApiController extends Controller
                  });
             }
             // if (request()->rating){
-            //     $branches = $branches->whereHas('avgRating')
+            //     $branches = $branches->whereHas('avgRating');
             // }
             if (request()->price){
                 $branches = $branches->whereHas('restaurant', function($query) {
