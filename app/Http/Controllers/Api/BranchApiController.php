@@ -26,8 +26,10 @@ class BranchApiController extends Controller
      */
     public function getBranchesByCategory($category = 'all')
     {
-        $branches = Branch::take(5)->get();
-        return $branches;
+        // $branches = Branch::whereHas('tempRating', function($query) {
+        //     $query->where
+        // })->get(); 
+        // return $branches;
         // $products = Branch::with(['branchRatings'])
         //                     ->leftJoin('branch_ratings', 'branch_ratings.branch_id', '=', 'branches.id')
         //                     ->select(['branches.*',
@@ -63,9 +65,6 @@ class BranchApiController extends Controller
                     });
                  });
             }
-            // if (request()->rating){
-            //     $branches = $branches->whereHas('avgRating');
-            // }
             if (request()->price){
                 $branches = $branches->whereHas('restaurant', function($query) {
                     $query->where('price_range', request()->price);
@@ -76,9 +75,17 @@ class BranchApiController extends Controller
                     $query->where('type', request()->type);
                 });
             }
-            $branches = $branches->orderBy("distance",'asc')
+            // if (request()->rating){
+            //     $branches = $branches->whereHas('branchRatings')->orderBy("distance",'asc')->with('restaurant.categories','city.governorate')->paginate(20);
+            //     $branches = $branches->where('rating', request()->rating);
+                                    
+            // }else{
+
+                $branches = $branches->orderBy("distance",'asc')
                                     ->with('restaurant.categories','city.governorate')
                                     ->paginate(20);
+            // }
+
             
             
         }else{

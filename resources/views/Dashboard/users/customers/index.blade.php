@@ -49,11 +49,11 @@
                                         <td class="center">{{$customer->email}}</td>
                                         <td class="center">{{$customer->created_at->format('d-m-Y H:i')}}</td>
                                         <td class="center">
-                                            {{-- <a href="{{route('dashboard.categories.edit', $customer->id)}}" class="btn btn-tbl-edit btn-xs">
-                                                <i class="fa fa-pencil"></i>
-                                            </a> --}}
+                                            <a href="" class="btn btn-tbl-edit btn-xs" title="Saved Places">
+                                                <i class="fa fa-star-o"></i>
+                                            </a>
                                             <button class="btn btn-tbl-delete btn-xs" onclick="event.preventDefault();
-                                            document.getElementById('delete-form').submit();">
+                                            document.getElementById('delete-form').submit();" title="Delete">
                                                 <i class="fa fa-trash-o "></i>
                                             </button>
                                             <form id="delete-form" action="#" method="POST" class="d-none">

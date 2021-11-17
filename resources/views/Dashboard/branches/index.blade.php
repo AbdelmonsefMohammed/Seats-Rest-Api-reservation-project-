@@ -47,6 +47,7 @@
                                     <th class="center"> City </th>
                                     <th class="center"> Governorate </th>
                                     <th class="center"> Mobile </th>
+                                    <th class="center"> Rating </th>
                                     <th class="center"> Action </th>
                                 </tr>
                             </thead>
@@ -59,6 +60,7 @@
                                         <td class="center">{{$branch->city->city_name_en}}</td>
                                         <td class="center">{{$branch->city->governorate->governorate_name_en}}</td>
                                         <td class="center">{{$branch->mobile1}}</td>
+                                        <td class="center">{{$branch->rating > 0? $branch->rating . ' Stars':'No rating'}}</td>
                                         <td class="center">
                                             <a href="{{route('dashboard.branches.edit', $branch->id)}}" class="btn btn-tbl-edit btn-xs">
                                                 <i class="fa fa-pencil"></i>

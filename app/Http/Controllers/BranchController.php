@@ -17,7 +17,8 @@ class BranchController extends Controller
      */
     public function index()
     {
-        $branches = Branch::all();
+        // $branches = Branch::all();
+        $branches = Branch::with('city.governorate','restaurant','branchRatings')->get();
         return view('Dashboard.branches.index', compact('branches'));
     }
 

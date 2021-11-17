@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->hasMany(Reservation::class);
     }
 
+    public function savedPlaces()
+    { 
+        return $this->hasMany(SavedPlaces::class);
+    }
+
     public static function rules($update = false, $id = null)
     {
         $common = [

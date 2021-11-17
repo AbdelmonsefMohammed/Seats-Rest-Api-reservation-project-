@@ -52,10 +52,17 @@ class Branch extends Model
     //     return ($relation) ? $relation->aggregate : null;
     // }
 
+    // public function tempRating($rating)
+    // {
+    //     if (CEIL($this->branchRatings()->avg('rating')) == $rating) {
+    //         return CEIL($this->branchRatings()->avg('rating'));
+    //     }
+    //     // return CEIL($this->branchRatings()->avg('rating'))?: 0;
+    // }
+
     public function getRatingAttribute()
     {
-        // return $this->branchRatings()->avg('rating');
-        return $this->branchRatings()->sum('rating') / $this->branchRatings()->count()?: 1 ?: 0;
+            return CEIL($this->branchRatings()->avg('rating'))?: 0;
     }
 
     public static function rules($update = false, $id = null)
