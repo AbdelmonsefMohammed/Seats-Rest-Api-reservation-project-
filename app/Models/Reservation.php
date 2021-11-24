@@ -8,9 +8,9 @@ class Reservation extends Model
 {
     protected $guarded = ['id'];
 
-    public function branches()
+    public function branch()
     {
-        return $this->hasMany(Branch::class, 'id', 'branch_id');
+        return $this->belongsTo(Branch::class);
     }
 
     public function user()

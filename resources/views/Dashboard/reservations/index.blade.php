@@ -49,14 +49,14 @@
                                         <td class="center">{{$reservation->date}} / {{$reservation->time}}</td>
                                         <td class="center">{{$reservation->status}}</td>
                                         <td class="center">
-                                            {{-- <a href="{{route('dashboard.categories.edit', $customer->id)}}" class="btn btn-tbl-edit btn-xs">
-                                                <i class="fa fa-pencil"></i>
-                                            </a> --}}
+                                            <a href="{{route('dashboard.reservations.show', $reservation->id)}}" class="btn btn-tbl-edit btn-xs">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
                                             <button class="btn btn-tbl-delete btn-xs" onclick="event.preventDefault();
                                             document.getElementById('delete-form').submit();">
                                                 <i class="fa fa-trash-o "></i>
                                             </button>
-                                            <form id="delete-form" action="#" method="POST" class="d-none">
+                                            <form id="delete-form" action="{{route('dashboard.reservations.destroy', $reservation->id)}}" method="POST" class="d-none">
                                                 @csrf
                                                 @method('Delete')
                                             </form>

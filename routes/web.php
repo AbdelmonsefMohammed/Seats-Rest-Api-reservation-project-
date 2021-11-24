@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth','role'], 'prefix' => 'dashboard', 'as' => 
 
     
     Route::resource('/customers'    , 'CustomersController');
-    Route::get('/reservations'      , 'ReservationController@index')->name('reservations.index');
+    Route::resource('/reservations'      , 'ReservationController');
 
     // ajax
     Route::get('/getcities/{governorate}', 'BranchController@getcities')->name('getcities');
