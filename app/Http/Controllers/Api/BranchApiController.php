@@ -26,18 +26,6 @@ class BranchApiController extends Controller
      */
     public function getBranchesByCategory($category = 'all')
     {
-        // $branches = Branch::whereHas('tempRating', function($query) {
-        //     $query->where
-        // })->get(); 
-        // return $branches;
-        // $products = Branch::with(['branchRatings'])
-        //                     ->leftJoin('branch_ratings', 'branch_ratings.branch_id', '=', 'branches.id')
-        //                     ->select(['branches.*',
-        //                         DB::raw('avg(rating) as ratings_average')
-        //                         ])
-        //                         ->groupBy('branches.id')->orderBy('ratings_average', 'DESC')->get();
-
-        // return $branches;
         $categories = Category::select('id','name')->get();
         if (request()->lat && request()->lng) {
             if (request()->distance) {
@@ -65,7 +53,23 @@ class BranchApiController extends Controller
                     });
                  });
             }
-            if (request()->price){
+            if (request()->rating){
+                $branches_ids = [];
+    
+                $branch_ratings = DB::table('branch_ratings')
+                                ->select(DB::raw('CEIL(avg(rating)) as branch_rating, branch_id'))
+                                ->groupBy('branch_id')
+                                ->get();
+    
+                foreach ($branch_ratings as $branch_r) {
+                    if ($branch_r->branch_rating == request()->rating) {
+                        $branches_ids[] = $branch_r->branch_id;
+                    }
+                }
+                $branches = $branches->whereIn('id', $branches_ids);
+    
+            }
+            if (request()->price){ 
                 $branches = $branches->whereHas('restaurant', function($query) {
                     $query->where('price_range', request()->price);
                 });
@@ -75,16 +79,11 @@ class BranchApiController extends Controller
                     $query->where('type', request()->type);
                 });
             }
-            // if (request()->rating){
-            //     $branches = $branches->whereHas('branchRatings')->orderBy("distance",'asc')->with('restaurant.categories','city.governorate')->paginate(20);
-            //     $branches = $branches->where('rating', request()->rating);
-                                    
-            // }else{
 
-                $branches = $branches->orderBy("distance",'asc')
-                                    ->with('restaurant.categories','city.governorate')
-                                    ->paginate(20);
-            // }
+            $branches = $branches->orderBy("distance",'asc')
+                                ->with('restaurant.categories','city.governorate')
+                                ->paginate(20)
+                                ->withQueryString();
 
             
             
@@ -97,7 +96,7 @@ class BranchApiController extends Controller
                     });
                  })->inRandomOrder()->with('restaurant.categories','city.governorate')->paginate(20);
             }else{
-                $branches = Branch::inRandomOrder()->with('restaurant.categories','city.governorate')->paginate(20);
+                $branches = Branch::inRandomOrder()->with('restaurant.categories','city.governorate')->paginate(20)->withQueryString();
             }
         }
         // return $branches;

@@ -71,7 +71,9 @@ class ReservationController extends Controller
      */
     public function update(Request $request, Reservation $reservation)
     {
-        //
+        $reservation->update(['status' => $request->status]);
+
+        return redirect()->route('dashboard.reservations.index')->with('success', "Reservation {$request->status}.");
     }
 
     /**
@@ -82,6 +84,12 @@ class ReservationController extends Controller
      */
     public function destroy(Reservation $reservation)
     {
-        //
+        try{
+            $reservation->delete();
+        } catch (\Exception $ex) {
+            return redirect()->back()->withErrors('Can\'t delete this item.');
+        }
+
+        return redirect()->back()->with('success', 'Reservation deleted successfully.');
     }
 }

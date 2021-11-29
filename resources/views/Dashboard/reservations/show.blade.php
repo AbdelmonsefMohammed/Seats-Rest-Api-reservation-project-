@@ -39,102 +39,81 @@
                         <div class="card-head">
                             <header>Show Reservation</header>
                         </div>
-                        {{-- <form action="{{route('dashboard.restaurants.update', $restaurant->id)}}" method="post" enctype="multipart/form-data">
+                        <form action="{{route('dashboard.reservations.update', $reservation->id)}}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-                            <div class="card-body row">
-                                <div class="col-lg-6 p-t-20"> 
-                                    <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                        <input name="name" value="{{$restaurant->name}}" class ="mdl-textfield__input" type="text" required>
-                                        <label class ="mdl-textfield__label">Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 p-t-20">
-                                    <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                      <input name="main_number" value="{{$restaurant->main_number}}" class = "mdl-textfield__input" type = "text" 
-                                         pattern = "-?[0-9]*(\.[0-9]+)?" id = "text5">
-                                      <label class = "mdl-textfield__label" for = "text5">Main Number</label>
-                                      <span class = "mdl-textfield__error">Number required!</span>
-                                   </div>
-                                 </div>
-
-                                 <label class="col-lg-2 p-t-20">Opening Hour</label>
-                                 <div class="col-lg-4">
-                                    <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                        <div class="input-group date form_time col-md-8" data-date="" data-date-format="hh:ii" data-link-field="openingHourInput" data-link-format="hh:ii">
-                                            <input class="form-control" size="16" type="text" value="{{$restaurant->opening_time}}"  required>
-                                            <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                            
+                            <div class="card-body">
+                                <h3><span class="bold">Customer Data</span></h3>
+                                <div class="row">
+                                    <div class="col-lg-6 p-t-20"> 
+                                        <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                            <input value="{{$reservation->user->name}}" class ="mdl-textfield__input" type="text" readonly>
+                                            <label class ="mdl-textfield__label">Customer Name</label>
                                         </div>
-                                        <input name="opening_time" type="hidden" id="openingHourInput" value="{{$restaurant->opening_time}}" />
-                                   </div>
-                                 </div>
-
-                                 <label class="col-lg-2 p-t-20">Closing Hour</label>
-                                 <div class="col-lg-4">
-                                    <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                        <div class="input-group date form_time col-md-8" data-date="" data-date-format="hh:ii" data-link-field="closingHourInput" data-link-format="hh:ii">
-                                            <input class="form-control" size="16" type="text" value="{{$restaurant->closing_time}}" required>
-                                            <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                                    </div>
+                                    <div class="col-lg-6 p-t-20"> 
+                                        <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                            <input value="{{$reservation->user->number}}" class ="mdl-textfield__input" type="text" readonly>
+                                            <label class ="mdl-textfield__label">Customer Phone</label>
                                         </div>
-                                        <input name="closing_time" type="hidden" id="closingHourInput" value="{{$restaurant->closing_time}}" />
-                                   </div>
-                                 </div>
-                                 
-                                 <div class="col-lg-6 p-t-20"> 
-                                    <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                        <input name="website_link" value="{{$restaurant->website_link}}" class ="mdl-textfield__input" type="url">
-                                        <label class ="mdl-textfield__label">Website URL</label>
                                     </div>
                                 </div>
-                                 <div class="col-lg-3 p-t-20">
-                                    <div class="form-group">
-                                        <label>Select Type</label>
-                                        <select name="type" class="form-control" required>
-                                            <option value="">...</option>
-                                            <option {{$restaurant->type == 'Restaurant'? 'selected':''}} value="Restaurant">Restaurant</option>
-                                            <option {{$restaurant->type == 'Cafe'? 'selected':''}} value="Cafe">Cafe</option>
-                                            <option {{$restaurant->type == 'Bar'? 'selected':''}} value="Bar">Bar</option>
-                                            <option {{$restaurant->type == 'Party'? 'selected':''}} value="Party">Party</option>
-                                            <option {{$restaurant->type == 'Office'? 'selected':''}} value="Office">Office</option>
-                                        </select>
+                                <h3><span class="bold">Restaurant Data</span></h3>
+                                <div class="row">
+                                    <div class="col-lg-6 p-t-20"> 
+                                        <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                            <input value="{{$reservation->branch->restaurant->name}}" class ="mdl-textfield__input" type="text" readonly>
+                                            <label class ="mdl-textfield__label">Restaurant Name</label>
+                                        </div>
                                     </div>
-                                 </div>
-                                 <div class="col-lg-3 p-t-20">
-                                    <div class="form-group">
-                                        <label>Price Range</label>
-                                        <select name="price_range" class="form-control">
-                                            <option value="">...</option>
-                                            <option {{$restaurant->price_range == '1'? 'selected':''}} value="1">$</option>
-                                            <option {{$restaurant->price_range == '2'? 'selected':''}} value="2">$$</option>
-                                            <option {{$restaurant->price_range == '3'? 'selected':''}} value="3">$$$</option>
-                                        </select>
+                                    <div class="col-lg-6 p-t-20"> 
+                                        <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                            <input value="{{$reservation->branch->city->governorate->governorate_name_en}}" class ="mdl-textfield__input" type="text" readonly>
+                                            <label class ="mdl-textfield__label">Governorate</label>
+                                        </div>
                                     </div>
-                                 </div>
-                                 <div class="col-lg-6"> 
-                                    <div class="form-group">
-                                        <label>Select Categories</label>
-                                         @foreach ($categories as $category)
-                                            <div class="checkbox checkbox-icon-black p-0">
-                                                <input name="categories_{{$category->id}}" {{in_array($category->id,$restaurantCategories)? 'checked':''}}  id="checkbox{{$category->id}}" type="checkbox" >
-                                                <label for="checkbox{{$category->id}}">
-                                                    {{$category->name}}
-                                                </label>
-                                            </div>
-                                         @endforeach
+                                    <div class="col-lg-6 p-t-20"> 
+                                        <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                            <input value="{{$reservation->branch->city->city_name_en}}" class ="mdl-textfield__input" type="text" readonly>
+                                            <label class ="mdl-textfield__label">City</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 p-t-20"> 
+                                        <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                            <input value="{{$reservation->branch->address}}" class ="mdl-textfield__input" type="text" readonly>
+                                            <label class ="mdl-textfield__label">Address</label>
+                                        </div>
                                     </div>
                                 </div>
-                                 <label class="col-lg-2 p-t-20">Picture</label>
-                                 <div class="col-lg-4"> 
-                                    <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                        <input name="picture" class ="mdl-textfield__input" type="file">
+                                <h3><span class="bold">Reservation Data</span></h3>
+                                <div class="row">
+                                    <div class="col-lg-4 p-t-20"> 
+                                        <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                            <input value="{{$reservation->date}}" class ="mdl-textfield__input" type="text" readonly>
+                                            <label class ="mdl-textfield__label">Date</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 p-t-20"> 
+                                        <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                            <input value="{{$reservation->time}}" class ="mdl-textfield__input" type="text" readonly>
+                                            <label class ="mdl-textfield__label">Time</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 p-t-20"> 
+                                        <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                            <input value="{{$reservation->number_of_seats}}" class ="mdl-textfield__input" type="text" readonly>
+                                            <label class ="mdl-textfield__label">Number of Seats</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 p-t-20 text-center"> 
-                                    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Submit</button>
-                                    <a type="button" href="{{route('dashboard.restaurants.index')}}" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</a>
+                                    <button type="submit" name="status" value="Approved" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-success">Accept</button>
+                                    <button type="submit" name="status" value="Rejected" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-danger">Reject</button>
+                                    <a type="button" href="{{route('dashboard.reservations.index')}}" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</a>
                                 </div>
                             </div>
-                        </form> --}}
+                        </form>
 
                     </div>
                 </div>

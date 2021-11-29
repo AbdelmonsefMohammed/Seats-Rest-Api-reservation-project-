@@ -17,19 +17,5 @@ class Reservation extends Model
     {
         return $this->belongsTo(User::class);
     }
-    // public function rating()
-    // {
-    //     return $this->hasMany(BranchRating::class);
-    // }
-    
-    // public function userRating()
-    // {
-    //     return $this->rating->latest();
-    // }
-
-    // public function avgRating()
-    // {
-    // return $this->rating->avg('rating');
-    // }
     
 }
