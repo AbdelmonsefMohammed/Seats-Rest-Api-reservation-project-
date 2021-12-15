@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Models\AppRating;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class AppRatingController extends Controller
+class AppRatingController extends BaseApiController
 {
     public function rateapp(Request $request)
     {
@@ -28,27 +27,42 @@ class AppRatingController extends Controller
     
             return response()->json($response, 400);
         }
+
+        $rating = AppRating::updateOrCreate(
+            [
+                'user_id'    => auth()->user()->id,
+            ],
+            [
+                'rating'    => $request->rating,
+                'reason'    => $request->reason,
+                'comment'   => $request->comment,
+            ]
+        );
         
-        if (AppRating::where('user_id', auth()->user()->id)->exists()) {
+        $data = ['rating'  => $rating];
 
-            $rating = tap(AppRating::where('user_id', auth()->user()->id))->update($request->all())->first();
-            $response = [
-                'message'   => 'User updated application rating',
-                'validation'=> [],    
-                'data'      => ['rating'  => $rating,],
-                'code'      => 200
-            ];
+        return $this->return_success('User rated the application', $data);
+        
+        // if (AppRating::where('user_id', auth()->user()->id)->exists()) {
 
-        }else{
+        //     $rating = tap(AppRating::where('user_id', auth()->user()->id))->update($request->all())->first();
+        //     $response = [
+        //         'message'   => 'User updated application rating',
+        //         'validation'=> [],    
+        //         'data'      => ['rating'  => $rating,],
+        //         'code'      => 200
+        //     ];
+
+        // }else{
             
-            $rating = AppRating::create(array_merge($request->all(), ['user_id' => auth()->user()->id]));
-            $response = [
-                'message'   => 'User rated the application',
-                'validation'=> [],    
-                'data'      => ['rating'  => $rating,],
-                'code'      => 200
-            ];
-        }
+        //     $rating = AppRating::create(array_merge($request->all(), ['user_id' => auth()->user()->id]));
+        //     $response = [
+        //         'message'   => 'User rated the application',
+        //         'validation'=> [],    
+        //         'data'      => ['rating'  => $rating,],
+        //         'code'      => 200
+        //     ];
+        // }
 
         return response()->json($response, 200);
     }
