@@ -39,6 +39,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['avatar_path'];
+
+    public function getAvatarPathAttribute()
+    {
+            return $this->avatar? "/storage/users/{$this->id}" : NULL;
+    }
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
