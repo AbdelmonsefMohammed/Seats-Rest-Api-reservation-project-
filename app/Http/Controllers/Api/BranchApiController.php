@@ -6,9 +6,8 @@ use App\Models\Branch;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
-class BranchApiController extends Controller
+class BranchApiController extends BaseApiController
 {
     /**
      * @header Get Branches in home screen endpoint
@@ -101,19 +100,14 @@ class BranchApiController extends Controller
         }
         // return $branches;
         if ($branches->count() < 1) {
-            $response = [
-                'message'   => 'There is no Available Results',
-                'validation'=> [],    
-                'data'      => ['categories' => $categories],
-                'code'      => 200
-            ];
+            $data = ['categories' => $categories];
+
+            return $this->return_success('There is no Available Results', $data);
         }else{
-            $response = [
-                'message'   => '',
-                'validation'=> [],    
-                'data'      => ['categories' => $categories,'branches' => $branches],
-                'code'      => 200
-            ];
+
+            $data = ['categories' => $categories, 'branches' => $branches];
+
+            return $this->return_success('', $data);
         }
 
 
@@ -122,24 +116,13 @@ class BranchApiController extends Controller
 
     public function show($id)
     {
-        $branch = Branch::where('id',$id)->with('restaurant.categories','city.governorate')->get();
-        if ($branch->count() < 1) {
-            $response = [
-                'message'   => 'There is no Available Results',
-                'validation'=> [],    
-                'data'      => [],
-                'code'      => 400
-            ];
-        }else{
-            $response = [
-                'message'   => '',
-                'validation'=> [],    
-                'data'      => ['branch' => $branch],
-                'code'      => 200
-            ];
+        $branch = Branch::where('id',$id)->with('restaurant.categories','city.governorate')->first();
+        if (empty($branch)) {
+            return $this->return_fail('There is no Available Results', []);
         }
 
+        $data = ['branch' => $branch];
 
-        return response()->json($response, 200);
+        return $this->return_success('', $data);
     }
 }

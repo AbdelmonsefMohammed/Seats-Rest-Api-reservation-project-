@@ -2,12 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Branch extends Model
 {
-    protected $appends = ['rating'];
+    protected $appends = ['rating','is_saved'];
     protected $guarded = ['id'];
+
+    public function getIsSavedAttribute()
+    {
+        if (Auth::check()) {
+            $ckeck_in_saved_places = SavedPlaces::where('user_id', Auth::user()->id)->where('branch_id', $this->id)->get();
+            if ($ckeck_in_saved_places->count() > 0) {
+                return True;
+            }
+        }
+            return False;
+    }
 
     public function restaurant()
     {

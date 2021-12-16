@@ -96,7 +96,7 @@ class DatabaseSeeder extends Seeder
                 'address'       =>  'address test',
                 'city_id'       =>  City::all()->random()->id,
             ));
-            if ($branch->id == 20000) {
+            if ($branch->id == 500) {
                 break;
             }
         }

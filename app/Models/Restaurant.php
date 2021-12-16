@@ -8,7 +8,7 @@ class Restaurant extends Model
 {
     protected $guarded = ['id'];
 
-    protected $appends = ['price_range_symbol'];
+    protected $appends = ['price_range_symbol','picture_path'];
     public function getPriceRangeSymbolAttribute()
     {
         switch($this->attributes['price_range']){
@@ -21,6 +21,11 @@ class Restaurant extends Model
         }
     }
 
+    public function getPicturePathAttribute()
+    {
+            return $this->picture? "/storage/restaurants/" : NULL;
+    }
+    
     public function categories()
     {
         return $this->belongsToMany(Category::class);

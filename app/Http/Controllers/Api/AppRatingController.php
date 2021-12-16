@@ -18,14 +18,10 @@ class AppRatingController extends BaseApiController
         ]);
 
         if ($validator->fails()) {
-            $response = [
-                'message'   => 'The given data was invalid',
-                'validation'=> $validator->errors(),    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
+
+            // $validation = $validator->errors();
+
+            return $this->return_fail('The given data was invalid', $validator->errors());
         }
 
         $rating = AppRating::updateOrCreate(
@@ -43,27 +39,5 @@ class AppRatingController extends BaseApiController
 
         return $this->return_success('User rated the application', $data);
         
-        // if (AppRating::where('user_id', auth()->user()->id)->exists()) {
-
-        //     $rating = tap(AppRating::where('user_id', auth()->user()->id))->update($request->all())->first();
-        //     $response = [
-        //         'message'   => 'User updated application rating',
-        //         'validation'=> [],    
-        //         'data'      => ['rating'  => $rating,],
-        //         'code'      => 200
-        //     ];
-
-        // }else{
-            
-        //     $rating = AppRating::create(array_merge($request->all(), ['user_id' => auth()->user()->id]));
-        //     $response = [
-        //         'message'   => 'User rated the application',
-        //         'validation'=> [],    
-        //         'data'      => ['rating'  => $rating,],
-        //         'code'      => 200
-        //     ];
-        // }
-
-        return response()->json($response, 200);
     }
 }
