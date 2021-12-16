@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Reservation;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class ReservationController extends Controller
+class ReservationController extends BaseApiController
 {
     /**
      * Display a listing of the resource.
@@ -20,14 +19,10 @@ class ReservationController extends Controller
                                     ->where('user_id', auth()->user()->id)
                                     ->with('branch.restaurant.categories','branch.city.governorate')
                                     ->get();
-        $response = [
-            'message'   => 'User Reservations',
-            'validation'=> [],    
-            'data'      => ['reservations'  => $reservations],
-            'code'      => 200
-        ];
 
-        return response()->json($response, 200);
+        $data = ['reservations'  => $reservations];
+
+        return $this->return_success('User Reservations', $data);
     }
 
     /**
@@ -56,14 +51,9 @@ class ReservationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $response = [
-                'message'   => 'The given data was invalid',
-                'validation'=> $validator->errors(),    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
+
+            return $this->return_fail('The given data was invalid', $validator->errors());
+
         }
         
             
@@ -75,14 +65,10 @@ class ReservationController extends Controller
             'number_of_seats'   => $request->number_of_seats,
         ]);
         $reservation->load('branch.restaurant');
-        $response = [
-            'message'   => 'User created reservation successfully',
-            'validation'=> [],    
-            'data'      => ['reservation'  => $reservation,],
-            'code'      => 200
-        ];
 
-        return response()->json($response, 200);
+        $data = ['reservation'  => $reservation];
+
+        return $this->return_success('User created reservation successfully', $data);
     }
 
     /**

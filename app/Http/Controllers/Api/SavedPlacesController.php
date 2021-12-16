@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Models\Branch;
 use App\Models\SavedPlaces;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-
-class SavedPlacesController extends Controller
+class SavedPlacesController extends BaseApiController
 {
     /**
      * Display a listing of the resource.
@@ -21,14 +19,10 @@ class SavedPlacesController extends Controller
             $query->where('user_id', auth()->user()->id);
         })->with('restaurant.categories','city.governorate')->get();
 
-        $response = [
-            'message'   => 'User Saved places',
-            'validation'=> [],    
-            'data'      => ['SavedPlaces'  => $branches],
-            'code'      => 200
-        ];
+        $data = ['SavedPlaces'  => $branches];
 
-        return response()->json($response, 200);
+        return $this->return_success('User Saved places', $data);
+
     }
 
     /**
@@ -42,25 +36,13 @@ class SavedPlacesController extends Controller
         $check_if_exists = SavedPlaces::where('user_id', auth()->user()->id)->where('branch_id', $branch_id)->get();
         if($check_if_exists->count() > 0)
         {
-            $response = [
-                'message'   => 'Restaurant already exists in Saved Places',
-                'validation'=> [],    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
+            
+            return $this->return_fail('Restaurant already exists in Saved Places', []);
+
         }
         SavedPlaces::create(['user_id' => auth()->user()->id, 'branch_id' => $branch_id]);
 
-        $response = [
-            'message'   => 'Restaurant added to Saved Places',
-            'validation'=> [],    
-            'data'      => [],
-            'code'      => 200
-        ];
-
-        return response()->json($response, 200);
+        return $this->return_success('Restaurant added to Saved Places', []);
     }
 
     /**
@@ -75,23 +57,11 @@ class SavedPlacesController extends Controller
         if($check_if_exists->count() > 0)
         {
             SavedPlaces::where('user_id', auth()->user()->id)->where('branch_id', $branch_id)->delete();
-            $response = [
-                'message'   => 'Restaurant deleted from Saved Places Successfully',
-                'validation'=> [],    
-                'data'      => [],
-                'code'      => 200
-            ];
-    
-            return response()->json($response, 200);
+
+            return $this->return_success('Restaurant deleted from Saved Places Successfully', []);
         }
 
-        $response = [
-            'message'   => 'Restaurant does not exist in Saved Places',
-            'validation'=> [],    
-            'data'      => [],
-            'code'      => 400
-        ];
+        return $this->return_fail('Restaurant does not exist in Saved Places', []);
 
-        return response()->json($response, 400);
     }
 }

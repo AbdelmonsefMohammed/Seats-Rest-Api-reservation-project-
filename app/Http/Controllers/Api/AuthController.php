@@ -5,14 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Validator;
 
-class AuthController extends Controller
+class AuthController extends BaseApiController
 {
     /**
      * Register endpoint
@@ -32,14 +31,8 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $response = [
-                'message'   => 'The given data was invalid',
-                'validation'=> $validator->errors(),    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
+
+            return $this->return_fail('The given data was invalid', $validator->errors());
         }
         $user = User::create([
             'name'      => $request->name,
@@ -49,18 +42,14 @@ class AuthController extends Controller
         ]);
         $user->assignRole('customer');
         $token = $user->createToken('auth_token')->plainTextToken;
-        $response = [
-            'message'   => 'User registered successfully',
-            'validation'=> [],    
-            'data'  => ['user'          => $user,
-                        'access_token'  => $token,
-                        'token_type'    => 'Bearer',
-                        ],
-            'code'      => 200,
 
-        ];
+        $data = ['user'         => $user,
+                'access_token'  => $token,
+                'token_type'    => 'Bearer',
+                ];
 
-        return response()->json($response, 200);
+        return $this->return_success( 'User registered successfully', $data);
+
     }
 
     public function login(Request $request)
@@ -71,40 +60,25 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $response = [
-                'message'   => 'The given data was invalid',
-                'validation'=> $validator->errors(),    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
+
+            return $this->return_fail('The given data was invalid', $validator->errors());
+
         }
 
         if (!Auth::attempt($request->only('email', 'password'))) {
-            $response = [
-                'message'   => 'Invalid login details',
-                'validation'=> [  "email" => [ "Invalid email or password." ]],    
-                'data'      => [],
-                'code'      => 400
-            ];
-            return response()->json($response, 400);
+
+            return $this->return_fail('Invalid login details', ["email" => [ "Invalid email or password." ]]);
         }
 
         $user = User::where('email', $request->email)->firstOrFail();
 
         $token = $user->createToken('auth_token')->plainTextToken;
-        $response = [
-            'message'   => 'User looged in successfully',
-            'validation'=> [],    
-            'data'  => ['user'          => $user,
-                        'access_token'  => $token,
-                        'token_type'    => 'Bearer',
-                        ],
-            'code'      => 200,
-        ];
+        $data = ['user'          => $user,
+                 'access_token'  => $token,
+                 'token_type'    => 'Bearer',
+                ];
+        return $this->return_success( 'User looged in successfully', $data);
 
-        return response()->json($response, 200);
     }
     public function sendPasswordResetLinkEmail(Request $request) {
         $validator = Validator::make($request->all(), [
@@ -112,14 +86,9 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $response = [
-                'message'   => 'The given data was invalid',
-                'validation'=> $validator->errors(),    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
+
+            return $this->return_fail('The given data was invalid', $validator->errors());
+
         }
 
 		$status = Password::sendResetLink(
@@ -127,43 +96,28 @@ class AuthController extends Controller
 		);
 
 		if($status === Password::RESET_LINK_SENT) {
-            $response = [
-                'message'   => 'We have emailed your password reset link!',
-                'validation'=> [],    
-                'data'      => [],
-                'code'      => 200
-            ];
-    
-            return response()->json($response, 200);
+
+            return $this->return_success( 'We have emailed your password reset link!', []);
+
 		} else {
-            $response = [
-                'message'   => 'The given data was invalid',
-                'validation'=> ['email' => __($status)],    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
+
+            return $this->return_fail('The given data was invalid', ['email' => __($status)]);
+
 		}
 	}
 
 	public function resetPassword(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'token' => 'required',
+            'token'     => 'required',
             'email'     => 'required|string|email|max:255',
             'password'  => 'required|string|min:8|confirmed'
         ]);
 
         if ($validator->fails()) {
-            $response = [
-                'message'   => 'The given data was invalid',
-                'validation'=> $validator->errors(),    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
+
+            return $this->return_fail('The given data was invalid', $validator->errors());
+
         }
 
 		$status = Password::reset(
@@ -180,25 +134,14 @@ class AuthController extends Controller
 		);
 
 		if($status == Password::PASSWORD_RESET) {
-            $response = [
-                'message'   => __($status),
-                'validation'=> [],    
-                'data'      => [],
-                'code'      => 200
-            ];
-    
-            return response()->json($response, 200);
+
+            return $this->return_success(__($status), []);
 
 		} else {
-            $response = [
-                'message'   => 'The given data was invalid',
-                'validation'=> ['email' => __($status)],    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
-		}
+
+            return $this->return_fail('The given data was invalid', ['email' => __($status)]);
+
+        }
 	}
 
     public function logout()
@@ -208,14 +151,7 @@ class AuthController extends Controller
 
         // logout from current device only
         auth()->user()->currentAccessToken()->delete();
-        $response = [
-            'message'   => 'User Logged out successfully',
-            'validation'=> [],    
-            'data'      => [],
-            'code'      => 200
-        ];
 
-        return response()->json($response, 200);
-
+        return $this->return_success('User Logged out successfully', []);
     }
 }

@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class ProfileController extends Controller
+class ProfileController extends BaseApiController
 {
     public function updateProfileData(Request $request)
     {
@@ -20,14 +19,9 @@ class ProfileController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $response = [
-                'message'   => 'The given data was invalid',
-                'validation'=> $validator->errors(),    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
+
+            return $this->return_fail('The given data was invalid', $validator->errors());
+
         }
         if ($request->password) {
             $request->merge([
@@ -37,15 +31,10 @@ class ProfileController extends Controller
 
         auth()->user()->update($request->all());
 
-        $response = [
-            'message'   => 'User updated profile successfully',
-            'validation'=> [],    
-            'data'      => ['user'  => auth()->user()],
-            'code'      => 200,
+        $data = ['user'  => auth()->user()];
 
-        ];
+        return $this->return_success('User updated profile successfully', $data);
 
-        return response()->json($response, 200);
     }
 
     public function updateAvatar(Request $request)
@@ -55,14 +44,8 @@ class ProfileController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $response = [
-                'message'   => 'The given data was invalid',
-                'validation'=> $validator->errors(),    
-                'data'      => [],
-                'code'      => 400
-            ];
-    
-            return response()->json($response, 400);
+            
+            return $this->return_fail('The given data was invalid', $validator->errors());
         }
 
         if ($request->file('avatar')) {
@@ -70,26 +53,14 @@ class ProfileController extends Controller
             $user_id = auth()->user()->id;
             if(!empty($avatar))
             {
-                $picture = "/storage/users/{$user_id}/{$avatar}";
-                $path = str_replace('\\','/',public_path());
-                
-                if(file_exists($path . $picture))
-                {
-                    unlink($path . $picture);
-                }
+                self::deleteFile($user_id, $avatar);
             }
             $pic = time() . '_' . request()->file('avatar')->getClientOriginalName();
             request()->file('avatar')->storeAs('/',"/users/{$user_id}/{$pic}", '');
 
             auth()->user()->update(['avatar' => $pic]); 
-            $response = [
-                'message'   => 'User updated avatar successfully',
-                'validation'=> [],    
-                'data'      => [],
-                'code'      => 200
-            ];
-    
-            return response()->json($response, 200);
+
+            return $this->return_success('User updated avatar successfully', []);
   
         }
 
@@ -101,25 +72,27 @@ class ProfileController extends Controller
         $user_id = auth()->user()->id;
         if(!empty($avatar))
         {
-            $picture = "/storage/users/{$user_id}/{$avatar}";
-            $path = str_replace('\\','/',public_path());
-            
-            if(file_exists($path . $picture))
-            {
-                unlink($path . $picture);
-            }
+            self::deleteFile($user_id, $avatar);
+
         }
 
         auth()->user()->update(['avatar' => NULL]);
+
+        $data = ['user'  => auth()->user()];
+
+        return $this->return_success('Avatar deleted successfully', $data);
         
-        $response = [
-            'message'   => 'Avatar deleted successfully',
-            'validation'=> [],    
-            'data'      => ['user'  => auth()->user()],
-            'code'      => 200,
+    }
 
-        ];
-
-        return response()->json($response, 200);
+    static function deleteFile($user_id, $avatar)
+    {
+        $picture = "/storage/users/{$user_id}/{$avatar}";
+        $path = str_replace('\\','/',public_path());
+        
+        if(file_exists($path . $picture))
+        {
+            unlink($path . $picture);
+        }
+        return True;
     }
 }
