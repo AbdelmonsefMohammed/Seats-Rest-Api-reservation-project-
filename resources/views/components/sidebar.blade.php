@@ -95,37 +95,17 @@
                         <span class="title">Offers</span> 
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="#" class="nav-link nav-toggle"> <i class="material-icons">grain</i>
-                        <span class="title">Apps</span> <span class="arrow"></span>
+                        <span class="title">Settings</span> <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
-                            <a href="chat.html" class="nav-link "> <span class="title">Chat</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="contact_list.html" class="nav-link "> <span class="title">Contact List</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="contact_grid.html" class="nav-link "> <span class="title">Contact Grid</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="gallery.html" class="nav-link "> <span class="title">Gallery</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="support.html" class="nav-link "> <span class="title">Support</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="calendar.html" class="nav-link "> <span class="title">Calendar</span>
+                            <a href="{{route('dashboard.qrcode.edit')}}" class="nav-link "> <span class="title">QR Code</span>
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

@@ -106,10 +106,20 @@
                                             <label class ="mdl-textfield__label">Number of Seats</label>
                                         </div>
                                     </div>
+                                    <div class="col-lg-4 p-t-20"> 
+                                        <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                            <input value="{{$reservation->status}}" class ="mdl-textfield__input" type="text" readonly>
+                                            <label class ="mdl-textfield__label">Status</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-lg-12 p-t-20 text-center"> 
-                                    <button type="submit" name="status" value="Approved" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-success">Accept</button>
-                                    <button type="submit" name="status" value="Rejected" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-danger">Reject</button>
+                                    @if($reservation->status == 'Approved')
+                                        <button type="submit" name="status" value="Rejected" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-danger">Reject</button>
+                                    @elseif($reservation->status == 'Pending')
+                                        <button type="submit" name="status" value="Approved" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-success">Accept</button>
+                                        <button type="submit" name="status" value="Rejected" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-danger">Reject</button>
+                                    @endif
                                     <a type="button" href="{{route('dashboard.reservations.index')}}" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</a>
                                 </div>
                             </div>

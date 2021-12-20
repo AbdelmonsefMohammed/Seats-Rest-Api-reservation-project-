@@ -31,6 +31,10 @@ Route::group(['middleware' => ['auth','role'], 'prefix' => 'dashboard', 'as' => 
     Route::resource('/customers'    , 'CustomersController');
     Route::resource('/reservations'      , 'ReservationController');
 
+    // test qrcode
+    Route::get('/settings/qrcode/edit', 'QrCodeController@edit')->name('qrcode.edit');
+    Route::post('/settings/qrcode/update', 'QrCodeController@edit')->name('qrcode.update');
+
     // ajax
     Route::get('/getcities/{governorate}', 'BranchController@getcities')->name('getcities');
 });

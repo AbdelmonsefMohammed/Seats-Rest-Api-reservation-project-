@@ -71,6 +71,11 @@ class ReservationController extends Controller
      */
     public function update(Request $request, Reservation $reservation)
     {
+        if ($request->status == 'Approved') {
+            // approved logix + add code number + add code expiration date
+        }else {
+            // reject logic
+        }
         $reservation->update(['status' => $request->status]);
 
         return redirect()->route('dashboard.reservations.index')->with('success', "Reservation {$request->status}.");
