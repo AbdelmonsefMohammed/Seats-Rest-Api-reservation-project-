@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 
@@ -72,9 +73,14 @@ class ReservationController extends Controller
     public function update(Request $request, Reservation $reservation)
     {
         if ($request->status == 'Approved') {
-            // approved logix + add code number + add code expiration date
-        }else {
-            // reject logic
+            
+            $restaurant_expiration_time = $reservation->branch->restaurant->expiration_time;
+            $datetime = date('Y-m-d H:i:s', strtotime("$reservation->date $reservation->time"));
+            $reservation_time = Carbon::parse($datetime);
+            $code_expiration_date = $reservation_time->addMinutes($restaurant_expiration_time);
+
+
+            $reservation->update(['code' => self::generateCode() , 'code_expiration_date' => $code_expiration_date]);
         }
         $reservation->update(['status' => $request->status]);
 
@@ -96,5 +102,15 @@ class ReservationController extends Controller
         }
 
         return redirect()->back()->with('success', 'Reservation deleted successfully.');
+    }
+
+    public static function generateCode($length = 10) {
+        $characters = '0123456789';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

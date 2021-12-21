@@ -23,6 +23,7 @@ class CreateRestaurantsTable extends Migration
             $table->string('picture');
             $table->set('price_range', [1,2,3])->nullable();
             $table->set('type', ['Restaurant','Cafe','Bar','Party','Office']);
+            $table->integer('expiration_time')->default(60);
             $table->timestamps();
         });
     }

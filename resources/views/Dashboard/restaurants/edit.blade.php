@@ -129,6 +129,13 @@
                                         <input name="picture" class ="mdl-textfield__input" type="file">
                                     </div>
                                 </div>
+
+                                <div class="col-lg-6 p-t-20"> 
+                                    <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        <input name="expiration_time" value="{{$restaurant->expiration_time}}" class = "mdl-textfield__input" type="number">
+                                        <label class ="mdl-textfield__label">Reservation expiration time (in minutes)</label>
+                                    </div>
+                                </div>
                                 <div class="col-lg-12 p-t-20 text-center"> 
                                     <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Submit</button>
                                     <a type="button" href="{{route('dashboard.restaurants.index')}}" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</a>

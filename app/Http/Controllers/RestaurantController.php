@@ -38,10 +38,10 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        
         $this->validate($request, Restaurant::rules());
+        
         $categories_array = [];
-        $categories = $request->except('_token','name','main_number','opening_time','closing_time','website_link','type','price_range','picture');
+        $categories = $request->except('_token','name','main_number','opening_time','closing_time','website_link','type','price_range','picture','expiration_time');
         foreach ($categories as $key => $value) {
             $arr = explode('_',$key);
             $categories_array[] = $arr[1];
@@ -88,7 +88,7 @@ class RestaurantController extends Controller
     public function update(Request $request, Restaurant $restaurant)
     {
         $categories_array = [];
-        $categories = $request->except('_token','_method','name','main_number','opening_time','closing_time','website_link','type','price_range','picture');
+        $categories = $request->except('_token','_method','name','main_number','opening_time','closing_time','website_link','type','price_range','picture','expiration_time');
         foreach ($categories as $key => $value) {
             $arr = explode('_',$key);
             $categories_array[] = $arr[1];
