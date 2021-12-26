@@ -38,6 +38,7 @@ class CreateBranchesTable extends Migration
             $table->integer('commition')->nullable();
             $table->decimal('birthday_price')->nullable();
             $table->integer('birthday_commition')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
 
             $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 class Restaurant extends Model
 {
     protected $guarded = ['id'];
 
-    protected $appends = ['price_range_symbol','picture_path'];
+    protected $appends = ['price_range_symbol','picture_path','logo_path','store_status'];
     public function getPriceRangeSymbolAttribute()
     {
         switch($this->attributes['price_range']){
@@ -24,6 +25,21 @@ class Restaurant extends Model
     public function getPicturePathAttribute()
     {
             return $this->picture? "/storage/restaurants/" : NULL;
+    }
+
+    public function getLogoPathAttribute()
+    {
+            return $this->logo? "/storage/restaurants/logos/" : NULL;
+    }
+
+    public function getStoreStatusAttribute()
+    {
+        $now = new DateTime();
+        $opening_time = new DateTime($this->opening_time);
+        $closing_time = new DateTime($this->closing_time);
+
+        return $now >= $opening_time && $now <= $closing_time ? TRUE : FALSE;
+        
     }
     
     public function categories()

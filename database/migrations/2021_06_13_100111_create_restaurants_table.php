@@ -21,6 +21,7 @@ class CreateRestaurantsTable extends Migration
             $table->integer('main_number')->nullable();
             $table->string('website_link')->nullable();
             $table->string('picture');
+            $table->string('logo')->default('logo.png');
             $table->set('price_range', [1,2,3])->nullable();
             $table->set('type', ['Restaurant','Cafe','Bar','Party','Office']);
             $table->integer('expiration_time')->default(60);
