@@ -25,6 +25,19 @@ class ReservationController extends BaseApiController
         return $this->return_success('User Reservations', $data);
     }
 
+    public function VisitHistory()
+    {
+        $reservations = Reservation::whereHas('branch')
+                                    ->where('user_id', auth()->user()->id)
+                                    ->where('status', 'Completed')
+                                    ->with('branch.restaurant.categories','branch.city.governorate')
+                                    ->get();
+
+        $data = ['reservations'  => $reservations];
+
+        return $this->return_success('User Visit History', $data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -79,7 +92,12 @@ class ReservationController extends BaseApiController
      */
     public function show($id)
     {
-        //
+
+        $reservation = Reservation::with('branch.restaurant.categories','branch.city.governorate')->findOrFail($id);
+
+        $data = ['reservation'  => $reservation];
+
+        return $this->return_success('Show User Reservation', $data);
     }
 
     /**
